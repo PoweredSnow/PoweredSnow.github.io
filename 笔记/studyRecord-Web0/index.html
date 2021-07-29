@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/blog/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/blog/css/main.css">
+
+
+<link rel="stylesheet" href="/blog/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"starsound.xyz","root":"/blog/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="这是 2021 年 4 月 16 ~ 18 日的学习记录，主要内容为 cracer 第八期培训内容的 P1-基础讲解。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="网络安全学习记录#0">
+<meta property="og:url" content="http://starsound.xyz/blog/%E7%AC%94%E8%AE%B0/studyRecord-Web0/index.html">
+<meta property="og:site_name" content="SENA&#39;S BLOG">
+<meta property="og:description" content="这是 2021 年 4 月 16 ~ 18 日的学习记录，主要内容为 cracer 第八期培训内容的 P1-基础讲解。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-04-16T08:30:00.000Z">
+<meta property="article:modified_time" content="2021-05-01T02:31:22.789Z">
+<meta property="article:author" content="Sena">
+<meta property="article:tag" content="渗透">
+<meta property="article:tag" content="cms">
+<meta property="article:tag" content="HTTP">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://starsound.xyz/blog/%E7%AC%94%E8%AE%B0/studyRecord-Web0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>网络安全学习记录#0 | SENA'S BLOG</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?5ff91947ee8973f77089a981fb0f07a6";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/blog/atom.xml" title="SENA'S BLOG" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/blog/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">SENA'S BLOG</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">长夜伴浪破晓梦 梦晓破浪伴夜长</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/blog/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/blog/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/blog/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/blog/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/blog/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://starsound.xyz/blog/%E7%AC%94%E8%AE%B0/studyRecord-Web0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/blog/images/sena.jpg">
+      <meta itemprop="name" content="Sena">
+      <meta itemprop="description" content="苟利星奏生死以，岂因新岛避趋之">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SENA'S BLOG">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          网络安全学习记录#0
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-04-16 16:30:00" itemprop="dateCreated datePublished" datetime="2021-04-16T16:30:00+08:00">2021-04-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-05-01 10:31:22" itemprop="dateModified" datetime="2021-05-01T10:31:22+08:00">2021-05-01</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">笔记</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/blog/%E7%AC%94%E8%AE%B0/studyRecord-Web0/" class="post-meta-item leancloud_visitors" data-flag-title="网络安全学习记录#0" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/blog/%E7%AC%94%E8%AE%B0/studyRecord-Web0/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/blog/%E7%AC%94%E8%AE%B0/studyRecord-Web0/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>这是 2021 年 4 月 16 ~ 18 日的学习记录，主要内容为 cracer 第八期培训内容的 P1-基础讲解。</p>
+<span id="more"></span>
+
+<hr>
+<h2 id="学习内容"><a href="#学习内容" class="headerlink" title="学习内容"></a><strong>学习内容</strong></h2><p>cracer 第八期 培训内容 P1 基础讲解</p>
+<h2 id="学习目的"><a href="#学习目的" class="headerlink" title="学习目的"></a><strong>学习目的</strong></h2><ul>
+<li>  了解常见术语</li>
+<li>  熟悉渗透测试流程</li>
+<li>  熟练操作虛拟机配置</li>
+<li>  熟练安装系统</li>
+<li>  熟练搭建网站测试环境</li>
+<li>  掌握常见 cms 搭建方法</li>
+<li>  熟悉常见主流 cms 架构</li>
+<li>  熟悉 http 协议</li>
+</ul>
+<h2 id="学习笔记"><a href="#学习笔记" class="headerlink" title="学习笔记"></a><strong>学习笔记</strong></h2><h3 id="常用术语介绍"><a href="#常用术语介绍" class="headerlink" title="常用术语介绍"></a><strong>常用术语介绍</strong></h3><p><strong>1.脚本</strong></p>
+<p>编写网站用的编程语言（asp、php、jsp 等)。</p>
+<p><strong>2.HTML</strong></p>
+<p>超文本标记语言，编写网站所用的语言（css、js、html）</p>
+<p><strong>3.HTTP 协议</strong></p>
+<p>访问网站所遵循的一种基本协议</p>
+<p><strong>4.CMS(B/S)</strong></p>
+<p>网站的内容管理系统（织梦、wordpress、dede 等）</p>
+<p><em>任务：搜集各种常见的 CMS，下载下来并尝试自己搭建</em></p>
+<p><strong>5.MD5</strong></p>
+<p>一种加密算法（不可逆的），一般为 16 位；</p>
+<p>若得到 20 位，要删掉四位，前三后一，得到一个 16 位解。</p>
+<p><strong>6.肉鸡、抓鸡、跳板</strong></p>
+<p>肉鸡：被入侵了电脑；</p>
+<p>抓鸡：控制别人电脑的一个过程；</p>
+<p>跳板：借助别人的 IP 地址来攻击对方的 Web（建议这种攻击模式:先梯子，再跳板）</p>
+<p><strong>7.一句话、小马、大马</strong></p>
+<p><strong>webshell、提权、后门</strong></p>
+<p>一句话：一种脚本型木马，本身没有危害，例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php @eval($_POST[&#39;XX&#39;]);?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>小马：用来上传大马（小马拉大马）</p>
+<p>webshell：网站后门（一句话、小马、大马都被称之为 webshell）</p>
+<p><em>关于 <a href="https://xz.aliyun.com/t/6692">webshell</a>：</em></p>
+<blockquote>
+<p>webshell 是以 asp、php、jsp 等网页文件形式存在的一种命令执行环境，也称其为一种网页后门。一般说来，当 Hacker 入侵一个网站后，会把这些 asp、php 木马的后门文件放在该网站的 web 目录中，和正常的网页文件混杂，其命名可能和正常的文件命名很类似，让人无法第一眼通过文件名判断其为后门文件。然后呢，他就可以利用 web 请求的方式，用 asp 或者 php 木马后门控制网站服务器，包括上传下载文件、查看数据库、执行任意程序命令等一系列操作。</p>
+</blockquote>
+<p><em><a href="https://xz.aliyun.com/t/6692">webshell</a> 的分类：</em></p>
+<blockquote>
+<ul>
+<li>  根据文件大小分类：大马和小马(通常指的是一句话木马，能够使用菜刀这类工具去直接连接它)</li>
+<li>  根据脚本名称分类：jsp、asp、aspx、php</li>
+</ul>
+</blockquote>
+<p>提权：提升权限的过程，以得到服务器的一些权限</p>
+<p>后门：方便下次进入</p>
+<p><strong>8.源码打包、脱裤</strong></p>
+<p>源码打包：将整个网站的源码打包下载下来</p>
+<p>脱裤：把整个数据库的敏感信息脱出来</p>
+<p><strong>9.嗅探、rookit</strong></p>
+<p>嗅探：抓包嗅探网络数据包</p>
+<p>rookit：系统级隐藏后门</p>
+<h3 id="渗透测试流程讲解："><a href="#渗透测试流程讲解：" class="headerlink" title="渗透测试流程讲解："></a><strong>渗透测试流程讲解：</strong></h3><h4 id="什么是渗透测试？"><a href="#什么是渗透测试？" class="headerlink" title="什么是渗透测试？"></a><strong>什么是渗透测试？</strong></h4><p>渗透测试( penetration test)并没有一个标准的定义，国外一些安全组织达成共识的通用说法是：渗透测试是通过模拟恶意黑客的攻击方法，来评估计算机网络系统安全的一种评估方法。这个过程包括对系统的任何弱点、技术缺陷或漏洞的主动分析，这个分析是从个攻击者可能存在的位置来进行的，并且从这个位置有条件主动利用安全漏洞。</p>
+<p>换句话来说，渗透测试是指渗透人员在不同的位置（比如从内网、从外网等位置）利用各种手段对某个特定网络进行测试，以期发现和挖掘系统中存在的漏洞，然后输出滲透测试报告，并提交给网络所有者。网络所有者根据渗透人员提供的滲透测试报告，可以清晰知晓系统中存在的安全隐患和问题。</p>
+<h3 id="渗透测试流程"><a href="#渗透测试流程" class="headerlink" title="渗透测试流程"></a><strong>渗透测试流程</strong></h3><table>
+<thead>
+<tr>
+<th align="center">渗透测试流程</th>
+<th align="center"></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">明确目标</td>
+<td align="center">编写报告</td>
+</tr>
+<tr>
+<td align="center">信息收集</td>
+<td align="center">信息整理</td>
+</tr>
+<tr>
+<td align="center">漏洞探测</td>
+<td align="center">获取所需</td>
+</tr>
+<tr>
+<td align="center">漏洞验证</td>
+<td align="center">信息分析</td>
+</tr>
+</tbody></table>
+<blockquote>
+<ul>
+<li><p>  poc:漏洞验证</p>
+</li>
+<li><p>  exp:漏洞利用</p>
+</li>
+</ul>
+</blockquote>
+<h3 id="超文本传输协议（HTTP）"><a href="#超文本传输协议（HTTP）" class="headerlink" title="超文本传输协议（HTTP）"></a><strong>超文本传输协议（HTTP）</strong></h3><ul>
+<li><p>  超文本传输协议（HTTP，HyperText Transfer Protocol）</p>
+</li>
+<li><p>  即超文本传输协议，是一种详细规定了浏览器和万维网服务器之间互相通信的规则，它是万维网交换信息的基础，它允许将 HTML 文档从 Web 服务器传送到 Web 浏览器。</p>
+</li>
+</ul>
+<blockquote>
+<p>明文传输，非常不安全。</p>
+</blockquote>
+<h4 id="HTTP-响应码"><a href="#HTTP-响应码" class="headerlink" title="HTTP 响应码"></a><strong>HTTP 响应码</strong></h4><table>
+<thead>
+<tr>
+<th align="center">HTTP 响应码</th>
+<th align="center"></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">200</td>
+<td align="center">客户端请求成功，是最常见的状态</td>
+</tr>
+<tr>
+<td align="center">302</td>
+<td align="center">重定向</td>
+</tr>
+<tr>
+<td align="center">404</td>
+<td align="center">请求资源不存在，是最常见的状态</td>
+</tr>
+<tr>
+<td align="center">400</td>
+<td align="center">客户端请求有语法错误，不能被服务器所理解</td>
+</tr>
+<tr>
+<td align="center">401</td>
+<td align="center">请求未经授权</td>
+</tr>
+<tr>
+<td align="center">403</td>
+<td align="center">服务器收到请求，但是拒绝提供服务</td>
+</tr>
+<tr>
+<td align="center">500</td>
+<td align="center">服务器内部错误，是最常见的状态</td>
+</tr>
+<tr>
+<td align="center">503</td>
+<td align="center">服务器当前不能处理客户端的请求，一段时间后可能恢复正</td>
+</tr>
+</tbody></table>
+<h4 id="HTTP-url"><a href="#HTTP-url" class="headerlink" title="HTTP url"></a><strong>HTTP url</strong></h4><p>统一资源定位符</p>
+<blockquote>
+<p>如何判断一段 url 服务器位于 Windows 还是 Linux?</p>
+<p>看后缀（asp/jsp/php)，如果后缀区分大小写，则位于 Linux</p>
+</blockquote>
+<h4 id="HTTP-头讲解"><a href="#HTTP-头讲解" class="headerlink" title="HTTP 头讲解"></a><strong>HTTP 头讲解</strong></h4><blockquote>
+<p>200 响应码</p>
+<p>date 日期</p>
+<p>content-type 类型</p>
+<p>Accept- Charset:浏览器可接受的字符集。</p>
+<p>Content-length:表示请求消息正文的长度</p>
+<p>Cookie 这是最重要的请求头信息之</p>
+<p><a href="http://www.cracer.com/?post-373">http://www.cracer.com/?post-373</a></p>
+</blockquote>
+<h4 id="http-请求方法"><a href="#http-请求方法" class="headerlink" title="http 请求方法"></a><strong>http 请求方法</strong></h4><ul>
+<li>  GET</li>
+<li>  POST</li>
+<li>  OPTIONS</li>
+<li>  PUT</li>
+<li>  MOVE</li>
+<li>  DELETE</li>
+<li>  TRACE</li>
+</ul>
+<h4 id="错误配置-HTTP-方法导致的安全事件"><a href="#错误配置-HTTP-方法导致的安全事件" class="headerlink" title="错误配置 HTTP 方法导致的安全事件"></a><strong>错误配置 HTTP 方法导致的安全事件</strong></h4><p>服务器存在允许 PUT 方式和 MOVE 方式，这时我们可以通过 PUT 方式传一个 webshell.txt 然后通过 MOVE 方式结合解析漏洞这样就可以很快的拿到网站的 webshell。</p>
+<h4 id="HTTP-头中安全隐患"><a href="#HTTP-头中安全隐患" class="headerlink" title="HTTP 头中安全隐患"></a><strong>HTTP 头中安全隐患</strong></h4><p>在 PHP 中通常会使用<code>$\_SERVER[&quot;HTTP_CLIENT_IP&quot;]</code>或者<code>$\_SERVER[&quot;HTTP_X_FORWARDED_FOR&quot;]</code>来获取 IP；因此，我们就可以通过修改 http 头中的 X- Forwarded-For:、 client-ip:来进行攻击。</p>
+<blockquote>
+<p>例如：<br>1.突破服务器访问限制 ip<br>2.htp 头注入攻击等</p>
+</blockquote>
+<h3 id="HTTPS-协议"><a href="#HTTPS-协议" class="headerlink" title="HTTPS 协议"></a><strong>HTTPS 协议</strong></h3><p>HTTPS 其实是有两部分组成：HTP+SSL/TLS，也就是在 HTTP 上又加了层处理加密信息的模块。服务端和客户端的信息传输都会通过 TLS 进行加密，所以传输的数据都是加密后的数据。</p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>子在川上曰：“逝者如斯夫，不舍昼夜，”——《论语·子罕》</p>
+<hr>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Sena
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://starsound.xyz/blog/%E7%AC%94%E8%AE%B0/studyRecord-Web0/" title="网络安全学习记录#0">http://starsound.xyz/blog/笔记/studyRecord-Web0/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/blog/tags/%E6%B8%97%E9%80%8F/" rel="tag"># 渗透</a>
+              <a href="/blog/tags/cms/" rel="tag"># cms</a>
+              <a href="/blog/tags/HTTP/" rel="tag"># HTTP</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/blog/%E5%AD%A6%E4%B9%A0%E5%BF%83%E5%BE%97/kali-install/" rel="prev" title="在VMware中安装Kali Linux">
+      <i class="fa fa-chevron-left"></i> 在VMware中安装Kali Linux
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/blog/%E6%97%A5%E5%BF%97/notice/" rel="next" title="无聊的人才点进来看的文章">
+      无聊的人才点进来看的文章 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%A6%E4%B9%A0%E5%86%85%E5%AE%B9"><span class="nav-number">1.</span> <span class="nav-text">学习内容</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%A6%E4%B9%A0%E7%9B%AE%E7%9A%84"><span class="nav-number">2.</span> <span class="nav-text">学习目的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0"><span class="nav-number">3.</span> <span class="nav-text">学习笔记</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E6%9C%AF%E8%AF%AD%E4%BB%8B%E7%BB%8D"><span class="nav-number">3.1.</span> <span class="nav-text">常用术语介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E6%B5%81%E7%A8%8B%E8%AE%B2%E8%A7%A3%EF%BC%9A"><span class="nav-number">3.2.</span> <span class="nav-text">渗透测试流程讲解：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%EF%BC%9F"><span class="nav-number">3.2.1.</span> <span class="nav-text">什么是渗透测试？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E6%B5%81%E7%A8%8B"><span class="nav-number">3.3.</span> <span class="nav-text">渗透测试流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B6%85%E6%96%87%E6%9C%AC%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE%EF%BC%88HTTP%EF%BC%89"><span class="nav-number">3.4.</span> <span class="nav-text">超文本传输协议（HTTP）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#HTTP-%E5%93%8D%E5%BA%94%E7%A0%81"><span class="nav-number">3.4.1.</span> <span class="nav-text">HTTP 响应码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HTTP-url"><span class="nav-number">3.4.2.</span> <span class="nav-text">HTTP url</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HTTP-%E5%A4%B4%E8%AE%B2%E8%A7%A3"><span class="nav-number">3.4.3.</span> <span class="nav-text">HTTP 头讲解</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#http-%E8%AF%B7%E6%B1%82%E6%96%B9%E6%B3%95"><span class="nav-number">3.4.4.</span> <span class="nav-text">http 请求方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%94%99%E8%AF%AF%E9%85%8D%E7%BD%AE-HTTP-%E6%96%B9%E6%B3%95%E5%AF%BC%E8%87%B4%E7%9A%84%E5%AE%89%E5%85%A8%E4%BA%8B%E4%BB%B6"><span class="nav-number">3.4.5.</span> <span class="nav-text">错误配置 HTTP 方法导致的安全事件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HTTP-%E5%A4%B4%E4%B8%AD%E5%AE%89%E5%85%A8%E9%9A%90%E6%82%A3"><span class="nav-number">3.4.6.</span> <span class="nav-text">HTTP 头中安全隐患</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HTTPS-%E5%8D%8F%E8%AE%AE"><span class="nav-number">3.5.</span> <span class="nav-text">HTTPS 协议</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%93%E8%AF%AD"><span class="nav-number">4.</span> <span class="nav-text">结语</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Sena"
+      src="/blog/images/sena.jpg">
+  <p class="site-author-name" itemprop="name">Sena</p>
+  <div class="site-description" itemprop="description">苟利星奏生死以，岂因新岛避趋之</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/blog/archives/">
+        
+          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/blog/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/blog/tags/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/PoweredSnow" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;PoweredSnow" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://stackoverflow.com/users/15281544/poweredsnow" title="StackOverflow → https:&#x2F;&#x2F;stackoverflow.com&#x2F;users&#x2F;15281544&#x2F;poweredsnow" rel="noopener" target="_blank"><i class="fab fa-stack-overflow fa-fw"></i></a>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sena</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/blog/lib/anime.min.js"></script>
+  <script src="/blog/lib/velocity/velocity.min.js"></script>
+  <script src="/blog/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/blog/js/utils.js"></script>
+
+<script src="/blog/js/motion.js"></script>
+
+
+<script src="/blog/js/schemes/pisces.js"></script>
+
+
+<script src="/blog/js/next-boot.js"></script>
+
+<script src="/blog/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/blog/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : true,
+      notify     : true,
+      appId      : '056xKMDLyksQK2TbqIOh3ANt-gzGzoHsz',
+      appKey     : '55tnwfKCJDjYrVQeyepDT9uU',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : true,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
