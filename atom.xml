@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>SENA&#39;S BLOG</title>
+  <icon>https://starsound.xyz/icon.png</icon>
+  <subtitle>长夜伴浪破晓梦 梦晓破浪伴夜长</subtitle>
+  <link href="https://starsound.xyz/atom.xml" rel="self"/>
+  
+  <link href="https://starsound.xyz/"/>
+  <updated>2021-08-26T15:24:13.153Z</updated>
+  <id>https://starsound.xyz/</id>
+  
+  <author>
+    <name>Sena</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title></title>
+    <link href="https://starsound.xyz/%E9%BB%98%E8%AE%A4/test/"/>
+    <id>https://starsound.xyz/%E9%BB%98%E8%AE%A4/test/</id>
+    <published>2021-08-26T15:24:10.673Z</published>
+    <updated>2021-08-26T15:24:13.153Z</updated>
+    
+    
+    
+    
+    
+  </entry>
+  
+</feed>
