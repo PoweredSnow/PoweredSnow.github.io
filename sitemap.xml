@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  
+  <url>
+    <loc>https://starsound.xyz/about/index.html</loc>
+    
+    <lastmod>2021-08-26</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://starsound.xyz/categories/index.html</loc>
+    
+    <lastmod>2021-04-21</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://starsound.xyz/tags/index.html</loc>
+    
+    <lastmod>2021-04-21</lastmod>
+    
+  </url>
+  
+
+  <url>
+    <loc>https://starsound.xyz/</loc>
+    <lastmod>2021-08-26</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  
+
+  
+</urlset>

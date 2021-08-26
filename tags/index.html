@@ -23,7 +23,7 @@
   <meta name="description" content="苟利星奏生死以，岂因新岛避趋之">
 <meta property="og:type" content="website">
 <meta property="og:title" content="标签">
-<meta property="og:url" content="http://starsound.xyz/tags/index.html">
+<meta property="og:url" content="https://starsound.xyz/tags/index.html">
 <meta property="og:site_name" content="SENA&#39;S BLOG">
 <meta property="og:description" content="苟利星奏生死以，岂因新岛避趋之">
 <meta property="og:locale" content="zh_CN">
@@ -33,7 +33,7 @@
 <meta property="article:tag" content="sena blog">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://starsound.xyz/tags/">
+<link rel="canonical" href="https://starsound.xyz/tags/">
 
 
 <script id="page-configurations">
@@ -87,7 +87,6 @@
   </style>
 </noscript>
 
-<link rel="alternate" href="/atom.xml" title="SENA'S BLOG" type="application/atom+xml">
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
@@ -223,10 +222,10 @@
       <div class="post-body">
           <div class="tag-cloud">
             <div class="tag-cloud-title">
-              目前共计 14 个标签
+              暂无标签
             </div>
             <div class="tag-cloud-tags">
-              <a href="/tags/DOS%E5%91%BD%E4%BB%A4/" style="font-size: 12px; color: #ccc">DOS命令</a> <a href="/tags/HTTP/" style="font-size: 12px; color: #ccc">HTTP</a> <a href="/tags/Kali-Linux/" style="font-size: 12px; color: #ccc">Kali Linux</a> <a href="/tags/Linux/" style="font-size: 12px; color: #ccc">Linux</a> <a href="/tags/VMware/" style="font-size: 12px; color: #ccc">VMware</a> <a href="/tags/cms/" style="font-size: 12px; color: #ccc">cms</a> <a href="/tags/%E6%9B%B4%E6%96%B0%E6%97%A5%E5%BF%97/" style="font-size: 12px; color: #ccc">更新日志</a> <a href="/tags/%E6%9C%8D%E5%8A%A1/" style="font-size: 12px; color: #ccc">服务</a> <a href="/tags/%E6%B3%A8%E5%86%8C%E8%A1%A8/" style="font-size: 12px; color: #ccc">注册表</a> <a href="/tags/%E6%B8%97%E9%80%8F/" style="font-size: 12px; color: #ccc">渗透</a> <a href="/tags/%E7%A2%8E%E7%A2%8E%E5%BF%B5/" style="font-size: 12px; color: #ccc">碎碎念</a> <a href="/tags/%E7%AB%AF%E5%8F%A3/" style="font-size: 12px; color: #ccc">端口</a> <a href="/tags/%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF/" style="font-size: 12px; color: #ccc">解题思路</a> <a href="/tags/%E9%97%AE%E9%A2%98/" style="font-size: 12px; color: #ccc">问题</a>
+              
             </div>
           </div>
         
@@ -302,25 +301,6 @@
 </div>
 <div class="site-state-wrap motion-element">
   <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-          <a href="/archives/">
-        
-          <span class="site-state-item-count">8</span>
-          <span class="site-state-item-name">日志</span>
-        </a>
-      </div>
-      <div class="site-state-item site-state-categories">
-            <a href="/categories/">
-          
-        <span class="site-state-item-count">4</span>
-        <span class="site-state-item-name">分类</span></a>
-      </div>
-      <div class="site-state-item site-state-tags">
-            <a href="/tags/">
-          
-        <span class="site-state-item-count">14</span>
-        <span class="site-state-item-name">标签</span></a>
-      </div>
   </nav>
 </div>
   <div class="links-of-author motion-element">
@@ -400,6 +380,48 @@
 
 
   
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
 
 
 
