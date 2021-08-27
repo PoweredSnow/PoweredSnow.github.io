@@ -1,8 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title></title>
-    <url>/%E9%BB%98%E8%AE%A4/test/</url>
-    <content><![CDATA[]]></content>
+    <title>Qui a tué fille</title>
+    <url>/diary/test/</url>
+    <content><![CDATA[<p>One must imagine Sisyphus happy.</p>
+<span id="more"></span>
+
+<h1 id="1-What"><a href="#1-What" class="headerlink" title="1. What"></a>1. What</h1><figure class="highlight plain"><figcaption><span>David Levithan Wide Awake</span></figcaption><table><tr><td class="code"><pre><span class="line">Do not just seek happiness for yourself.</span><br><span class="line">Seek happiness for all.</span><br><span class="line">Through kindness.</span><br><span class="line">Through mercy.</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-Why"><a href="#2-Why" class="headerlink" title="2. Why"></a>2. Why</h2><blockquote><p>NEW: DevDocs now comes with syntax highlighting. <a href="http://devdocs.io/">http://devdocs.io</a></p>
+<footer><strong>@DevDocs</strong><cite><a href="https://twitter.com/devdocs/status/356095192085962752">twitter.com/devdocs/status/356095192085962752</a></cite></footer></blockquote>
+
+<h3 id="3-How"><a href="#3-How" class="headerlink" title="3. How"></a>3. How</h3><blockquote><p>Every interaction is both precious and an opportunity to delight.</p>
+<footer><strong>Seth Godin</strong><cite><a href="http://sethgodin.typepad.com/seths_blog/2009/07/welcome-to-island-marketing.html">Welcome to Island Marketing</a></cite></footer></blockquote>
+]]></content>
+      <categories>
+        <category>diary</category>
+      </categories>
+      <tags>
+        <tag>philosophy</tag>
+      </tags>
   </entry>
 </search>
