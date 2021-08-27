@@ -21,4 +21,35 @@
         <tag>philosophy</tag>
       </tags>
   </entry>
+  <entry>
+    <title>[object Object]</title>
+    <url>/reverse/writeup-0/</url>
+    <content><![CDATA[<p>仅供参考。</p>
+<span id="more"></span>
+
+<h1 id="题目简介"><a href="#题目简介" class="headerlink" title="题目简介"></a>题目简介</h1><p><a href="https://ctf.bugku.com/challenges/detail/id/136.html">signin</a></p>
+<p>题目类型：Android</p>
+<h1 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h1><p>Android 基本架构<br>ARM 架构基础知识<br>APK 文件格式<br>Dalvik 层逆向分析</p>
+<h1 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h1><p><a href="https://ibotpeaches.github.io/Apktool/">Apktool</a><br><a href="https://github.com/pxb1988/dex2jar">dex2jar</a><br><a href="https://github.com/java-decompiler/jd-gui">jd-gui</a></p>
+<h1 id="解题过程"><a href="#解题过程" class="headerlink" title="解题过程"></a>解题过程</h1><h2 id="0x01-使用-Apktool-反编译-sign-in-apk"><a href="#0x01-使用-Apktool-反编译-sign-in-apk" class="headerlink" title="0x01: 使用 Apktool 反编译 sign_in.apk"></a>0x01: 使用 Apktool 反编译 sign_in.apk</h2><p><img src="https://tuchang2021.oss-cn-beijing.aliyuncs.com/img/Snipaste_2021-08-27_16-17-57.png" alt="Apktool"></p>
+<h2 id="0x02-使用-dex2jar-生成-jar-文件"><a href="#0x02-使用-dex2jar-生成-jar-文件" class="headerlink" title="0x02: 使用 dex2jar 生成 jar 文件"></a>0x02: 使用 dex2jar 生成 jar 文件</h2><p><img src="https://tuchang2021.oss-cn-beijing.aliyuncs.com/img/20210827163644.png" alt="dex2jar"></p>
+<h2 id="0x03-使用-jd-gui-查看反编译的-Java-代码"><a href="#0x03-使用-jd-gui-查看反编译的-Java-代码" class="headerlink" title="0x03: 使用 jd-gui 查看反编译的 Java 代码"></a>0x03: 使用 jd-gui 查看反编译的 Java 代码</h2><p><img src="https://tuchang2021.oss-cn-beijing.aliyuncs.com/img/20210827164329.png" alt="jd-gui"></p>
+<p>在 <code>MainActivity.class</code> 中可以找到如图所示的两段关键代码<br>读第一段代码可知 <code>falg</code> 为地址是 <code>2131427360</code> 的字符串<br>读第二段代码可知 要得到正确的 <code>flag</code> 需要把字符串进行逆置和 <code>base64</code> 解码</p>
+<h2 id="0x04-复制地址，在-R-class-中搜索此地址"><a href="#0x04-复制地址，在-R-class-中搜索此地址" class="headerlink" title="0x04: 复制地址，在 R.class 中搜索此地址"></a>0x04: 复制地址，在 <code>R.class</code> 中搜索此地址</h2><p><img src="https://tuchang2021.oss-cn-beijing.aliyuncs.com/img/20210827165344.png" alt="search"></p>
+<p>R 中表明 <code>2131427360</code> 对应的 <code>toString</code> 变量在 <code>string.xml</code> 里</p>
+<h2 id="0x05-去-res-values-string-xml-目录查找-toString-变量"><a href="#0x05-去-res-values-string-xml-目录查找-toString-变量" class="headerlink" title="0x05: 去 res/values/string.xml 目录查找 toString 变量"></a>0x05: 去 <code>res/values/string.xml</code> 目录查找 <code>toString</code> 变量</h2><p><img src="https://tuchang2021.oss-cn-beijing.aliyuncs.com/img/20210827170706.png" alt="toString"></p>
+<p><code>flag()</code> 方法中返回的字符串为 <code>991YiZWOz81ZhFjZfJXdwk3X1k2XzIXZIt3ZhxmZ</code></p>
+<h2 id="0x06-写脚本将得到的字符串逆置并进行-base64-解码"><a href="#0x06-写脚本将得到的字符串逆置并进行-base64-解码" class="headerlink" title="0x06: 写脚本将得到的字符串逆置并进行 base64 解码"></a>0x06: 写脚本将得到的字符串逆置并进行 <code>base64</code> 解码</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.io.UnsupportedEncodingException;</span><br><span class="line"><span class="keyword">import</span> java.util.Base64;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainActivity</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> String <span class="title">getFlag</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;991YiZWOz81ZhFjZfJXdwk3X1k2XzIXZIt3ZhxmZ&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">decode</span><span class="params">(String base64str)</span> </span>&#123;</span><br><span class="line">        String str = <span class="string">&quot;&quot;</span>;</span><br><span class="line">        <span class="comment">// 解码</span></span><br><span class="line">        <span class="keyword">byte</span>[] base64Data = Base64.getDecoder().decode(base64str);</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">// byte[] --&gt; string</span></span><br><span class="line">            str = <span class="keyword">new</span> String(base64Data, <span class="string">&quot;utf-8&quot;</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (UnsupportedEncodingException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> str;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        System.out.println(decode(<span class="keyword">new</span> StringBuffer(getFlag()).reverse().toString()));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://tuchang2021.oss-cn-beijing.aliyuncs.com/img/20210827171310.png" alt="flag"></p>
+]]></content>
+      <categories>
+        <category>reverse</category>
+      </categories>
+      <tags>
+        <tag>reverse</tag>
+        <tag>writeup</tag>
+        <tag>andorid</tag>
+      </tags>
+  </entry>
 </search>
