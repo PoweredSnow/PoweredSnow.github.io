@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
@@ -16,21 +16,22 @@
 
 
 <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
-  <link rel="stylesheet" href="/lib/pace/pace-theme-material.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
   <script src="/lib/pace/pace.min.js"></script>
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"starsound.xyz","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"starsound.xyz","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="I opened myself to the gentle indifference of the world">
+  <meta name="description" content="I opened myself to the gentle indifference of the world.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Starsound.XYZ">
 <meta property="og:url" content="https://starsound.xyz/index.html">
 <meta property="og:site_name" content="Starsound.XYZ">
-<meta property="og:description" content="I opened myself to the gentle indifference of the world">
-<meta property="og:locale" content="zh_CN">
+<meta property="og:description" content="I opened myself to the gentle indifference of the world.">
+<meta property="og:locale" content="en_US">
 <meta property="article:author" content="Hotaru">
 <meta property="article:tag" content="hotaru blog starsound star sound">
 <meta name="twitter:card" content="summary">
@@ -44,7 +45,7 @@
     sidebar: "",
     isHome : true,
     isPost : false,
-    lang   : 'zh-CN'
+    lang   : 'en'
   };
 </script>
 
@@ -98,7 +99,7 @@
     <header class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-container">
   <div class="site-nav-toggle">
-    <div class="toggle" aria-label="切换导航栏">
+    <div class="toggle" aria-label="Toggle navigation bar">
       <span class="toggle-line toggle-line-first"></span>
       <span class="toggle-line toggle-line-middle"></span>
       <span class="toggle-line toggle-line-last"></span>
@@ -129,36 +130,36 @@
   <ul id="menu" class="main-menu menu">
         <li class="menu-item menu-item-home">
 
-    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
 
   </li>
         <li class="menu-item menu-item-about">
 
-    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
 
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">4</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">6</span></a>
 
   </li>
         <li class="menu-item menu-item-categories">
 
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">2</span></a>
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">3</span></a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">2</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">2</span></a>
 
   </li>
         <li class="menu-item menu-item-sitemap">
 
-    <a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a>
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a>
 
   </li>
       <li class="menu-item menu-item-search">
-        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
         </a>
       </li>
   </ul>
@@ -174,7 +175,7 @@
   </span>
   <div class="search-input-container">
     <input autocomplete="off" autocapitalize="off"
-           placeholder="搜索..." spellcheck="false"
+           placeholder="Searching..." spellcheck="false"
            type="search" class="search-input">
   </div>
   <span class="popup-btn-close">
@@ -194,6 +195,7 @@
     </header>
 
     
+  <div class="reading-progress-bar"></div>
   <a role="button" class="book-mark-link book-mark-link-fixed"></a>
 
 
@@ -207,13 +209,13 @@
       
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://starsound.xyz/reverse/writeup-0/">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://starsound.xyz/enthusiasm/digest/digest-21-09/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/camus.png">
       <meta itemprop="name" content="Hotaru">
-      <meta itemprop="description" content="I opened myself to the gentle indifference of the world">
+      <meta itemprop="description" content="I opened myself to the gentle indifference of the world.">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -222,7 +224,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/reverse/writeup-0/" class="post-title-link" itemprop="url">BugkuCTF 平台 Reverse 题目 signin Writeup</a>
+            <a href="/enthusiasm/digest/digest-21-09/" class="post-title-link" itemprop="url">科技爱好者文摘——21年9月</a>
         </h2>
 
         <div class="post-meta">
@@ -230,27 +232,31 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">发表于</span>
+              <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="创建时间：2021-08-27 18:00:00 / 修改时间：17:42:00" itemprop="dateCreated datePublished" datetime="2021-08-27T18:00:00+08:00">2021-08-27</time>
+              <time title="Created: 2021-10-05 22:32:47 / Modified: 22:36:48" itemprop="dateCreated datePublished" datetime="2021-10-05T22:32:47+08:00">2021-10-05</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
-              <span class="post-meta-item-text">分类于</span>
+              <span class="post-meta-item-text">In</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/reverse/" itemprop="url" rel="index"><span itemprop="name">reverse</span></a>
+                  <a href="/categories/enthusiasm/" itemprop="url" rel="index"><span itemprop="name">Enthusiasm</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/enthusiasm/digest/" itemprop="url" rel="index"><span itemprop="name">Digest</span></a>
                 </span>
             </span>
 
           
-            <span id="/reverse/writeup-0/" class="post-meta-item leancloud_visitors" data-flag-title="BugkuCTF 平台 Reverse 题目 signin Writeup" title="阅读次数">
+            <span id="/enthusiasm/digest/digest-21-09/" class="post-meta-item leancloud_visitors" data-flag-title="科技爱好者文摘——21年9月" title="Views">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
-              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="post-meta-item-text">Views: </span>
               <span class="leancloud-visitors-count"></span>
             </span>
   
@@ -259,10 +265,10 @@
       <span class="post-meta-item-icon">
         <i class="far fa-comment"></i>
       </span>
-      <span class="post-meta-item-text">Valine：</span>
+      <span class="post-meta-item-text">Valine: </span>
     
-    <a title="valine" href="/reverse/writeup-0/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/reverse/writeup-0/" itemprop="commentCount"></span>
+    <a title="valine" href="/enthusiasm/digest/digest-21-09/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/enthusiasm/digest/digest-21-09/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -277,11 +283,11 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>仅供参考。</p>
+          <p>这里记录值得分享的科技内容，不定时更新。<br>一般收录笔者平时网上冲浪时遇见的感兴趣的文章/软件/资源。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/reverse/writeup-0/#more" rel="contents">
-                阅读全文 &raquo;
+              <a class="btn" href="/enthusiasm/digest/digest-21-09/#more" rel="contents">
+                Read more &raquo;
               </a>
             </div>
           <!--/noindex-->
@@ -303,13 +309,13 @@
       
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://starsound.xyz/diary/test/">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://starsound.xyz/writeup/writeup-0x01/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/camus.png">
       <meta itemprop="name" content="Hotaru">
-      <meta itemprop="description" content="I opened myself to the gentle indifference of the world">
+      <meta itemprop="description" content="I opened myself to the gentle indifference of the world.">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -318,7 +324,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/diary/test/" class="post-title-link" itemprop="url">Qui a tué fille</a>
+            <a href="/writeup/writeup-0x01/" class="post-title-link" itemprop="url">BugkuCTF 平台 Reverse 题目 signin Writeup</a>
         </h2>
 
         <div class="post-meta">
@@ -326,27 +332,33 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">发表于</span>
-              
+              <span class="post-meta-item-text">Posted on</span>
 
-              <time title="创建时间：2021-08-27 00:00:00 / 修改时间：12:57:38" itemprop="dateCreated datePublished" datetime="2021-08-27T00:00:00+08:00">2021-08-27</time>
+              <time title="Created: 2021-08-27 18:00:00" itemprop="dateCreated datePublished" datetime="2021-08-27T18:00:00+08:00">2021-08-27</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-10-05 22:36:30" itemprop="dateModified" datetime="2021-10-05T22:36:30+08:00">2021-10-05</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
-              <span class="post-meta-item-text">分类于</span>
+              <span class="post-meta-item-text">In</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/diary/" itemprop="url" rel="index"><span itemprop="name">diary</span></a>
+                  <a href="/categories/writeup/" itemprop="url" rel="index"><span itemprop="name">Writeup</span></a>
                 </span>
             </span>
 
           
-            <span id="/diary/test/" class="post-meta-item leancloud_visitors" data-flag-title="Qui a tué fille" title="阅读次数">
+            <span id="/writeup/writeup-0x01/" class="post-meta-item leancloud_visitors" data-flag-title="BugkuCTF 平台 Reverse 题目 signin Writeup" title="Views">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
-              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="post-meta-item-text">Views: </span>
               <span class="leancloud-visitors-count"></span>
             </span>
   
@@ -355,10 +367,10 @@
       <span class="post-meta-item-icon">
         <i class="far fa-comment"></i>
       </span>
-      <span class="post-meta-item-text">Valine：</span>
+      <span class="post-meta-item-text">Valine: </span>
     
-    <a title="valine" href="/diary/test/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/diary/test/" itemprop="commentCount"></span>
+    <a title="valine" href="/writeup/writeup-0x01/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/writeup/writeup-0x01/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -373,11 +385,11 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>One must imagine Sisyphus happy.</p>
+          <p>仅供参考。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/diary/test/#more" rel="contents">
-                阅读全文 &raquo;
+              <a class="btn" href="/writeup/writeup-0x01/#more" rel="contents">
+                Read more &raquo;
               </a>
             </div>
           <!--/noindex-->
@@ -440,10 +452,10 @@
 
       <ul class="sidebar-nav motion-element">
         <li class="sidebar-nav-toc">
-          文章目录
+          Table of Contents
         </li>
         <li class="sidebar-nav-overview">
-          站点概览
+          Overview
         </li>
       </ul>
 
@@ -457,7 +469,7 @@
     <img class="site-author-image" itemprop="image" alt="Hotaru"
       src="/images/camus.png">
   <p class="site-author-name" itemprop="name">Hotaru</p>
-  <div class="site-description" itemprop="description">I opened myself to the gentle indifference of the world</div>
+  <div class="site-description" itemprop="description">I opened myself to the gentle indifference of the world.</div>
 </div>
 <div class="site-state-wrap motion-element">
   <nav class="site-state">
@@ -465,20 +477,20 @@
           <a href="/archives/">
         
           <span class="site-state-item-count">2</span>
-          <span class="site-state-item-name">日志</span>
+          <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">2</span>
-        <span class="site-state-item-name">分类</span></a>
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">4</span>
-        <span class="site-state-item-name">标签</span></a>
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
 </div>
@@ -528,7 +540,7 @@
   </span>
   <span class="author" itemprop="copyrightHolder">Copyright Hotaru</span>
 </div>
-  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
   </div>
 
         
@@ -547,6 +559,8 @@
   
   <script size="300" alpha="0.6" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
   <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
 
@@ -563,10 +577,6 @@
 <script src="/js/bookmark.js"></script>
 
 
-  <script defer src="/lib/three/three.min.js"></script>
-    <script defer src="/lib/three/three-waves.min.js"></script>
-    <script defer src="/lib/three/canvas_lines.min.js"></script>
-    <script defer src="/lib/three/canvas_sphere.min.js"></script>
 
 
   
