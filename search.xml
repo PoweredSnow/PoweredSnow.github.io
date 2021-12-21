@@ -1,75 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>BugkuCTF 平台 Reverse 题目 signin Writeup</title>
-    <url>/writeup/writeup-0x01/</url>
-    <content><![CDATA[<p>仅供参考。</p>
-<span id="more"></span>
-
-<h1 id="题目简介"><a href="#题目简介" class="headerlink" title="题目简介"></a>题目简介</h1><p><a href="https://ctf.bugku.com/challenges/detail/id/136.html">signin</a></p>
-<p>题目类型：Android</p>
-<h1 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h1><p>Android 基本架构<br>ARM 架构基础知识<br>APK 文件格式<br>Dalvik 层逆向分析</p>
-<h1 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h1><p><a href="https://ibotpeaches.github.io/Apktool/">Apktool</a><br><a href="https://github.com/pxb1988/dex2jar">dex2jar</a><br><a href="https://github.com/java-decompiler/jd-gui">jd-gui</a></p>
-<h1 id="解题过程"><a href="#解题过程" class="headerlink" title="解题过程"></a>解题过程</h1><h2 id="0x01-使用-Apktool-反编译-sign-in-apk"><a href="#0x01-使用-Apktool-反编译-sign-in-apk" class="headerlink" title="0x01. 使用 Apktool 反编译 sign_in.apk"></a>0x01. 使用 <code>Apktool</code> 反编译 <code>sign_in.apk</code></h2><p><img src="https://tuchang2021.oss-cn-beijing.aliyuncs.com/img/Snipaste_2021-08-27_16-17-57.png" alt="Apktool"></p>
-<h2 id="0x02-使用-dex2jar-生成-jar-文件"><a href="#0x02-使用-dex2jar-生成-jar-文件" class="headerlink" title="0x02. 使用 dex2jar 生成 jar 文件"></a>0x02. 使用 <code>dex2jar</code> 生成 <code>jar</code> 文件</h2><p><img src="https://tuchang2021.oss-cn-beijing.aliyuncs.com/img/20210827163644.png" alt="dex2jar"></p>
-<h2 id="0x03-使用-jd-gui-查看反编译的-java-代码"><a href="#0x03-使用-jd-gui-查看反编译的-java-代码" class="headerlink" title="0x03. 使用 jd-gui 查看反编译的 java 代码"></a>0x03. 使用 <code>jd-gui</code> 查看反编译的 <code>java</code> 代码</h2><p><img src="https://tuchang2021.oss-cn-beijing.aliyuncs.com/img/20210827164329.png" alt="jd-gui"></p>
-<p>在 <code>MainActivity.class</code> 中可以找到如图所示的两段关键代码<br>读第一段代码可知 <code>falg</code> 为地址是 <code>2131427360</code> 的字符串<br>读第二段代码可知 要得到正确的 <code>flag</code> 需要把字符串进行逆置和 <code>base64</code> 解码</p>
-<h2 id="0x04-复制地址，在-R-class-中搜索此地址"><a href="#0x04-复制地址，在-R-class-中搜索此地址" class="headerlink" title="0x04. 复制地址，在 R.class 中搜索此地址"></a>0x04. 复制地址，在 <code>R.class</code> 中搜索此地址</h2><p><img src="https://tuchang2021.oss-cn-beijing.aliyuncs.com/img/20210827165344.png" alt="search"></p>
-<p>R 中表明 <code>2131427360</code> 对应的 <code>toString</code> 变量在 <code>string.xml</code> 里</p>
-<h2 id="0x05-去-res-values-string-xml-目录查找-toString-变量"><a href="#0x05-去-res-values-string-xml-目录查找-toString-变量" class="headerlink" title="0x05. 去 res/values/string.xml 目录查找 toString 变量"></a>0x05. 去 <code>res/values/string.xml</code> 目录查找 <code>toString</code> 变量</h2><p><img src="https://tuchang2021.oss-cn-beijing.aliyuncs.com/img/20210827170706.png" alt="toString"></p>
-<p><code>flag()</code> 方法中返回的字符串为 <code>991YiZWOz81ZhFjZfJXdwk3X1k2XzIXZIt3ZhxmZ</code></p>
-<h2 id="0x06-写脚本将得到的字符串逆置并进行-base64-解码"><a href="#0x06-写脚本将得到的字符串逆置并进行-base64-解码" class="headerlink" title="0x06. 写脚本将得到的字符串逆置并进行 base64 解码"></a>0x06. 写脚本将得到的字符串逆置并进行 <code>base64</code> 解码</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.io.UnsupportedEncodingException;</span><br><span class="line"><span class="keyword">import</span> java.util.Base64;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainActivity</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> String <span class="title">getFlag</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;991YiZWOz81ZhFjZfJXdwk3X1k2XzIXZIt3ZhxmZ&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">decode</span><span class="params">(String base64str)</span> </span>&#123;</span><br><span class="line">        String str = <span class="string">&quot;&quot;</span>;</span><br><span class="line">        <span class="comment">// 解码</span></span><br><span class="line">        <span class="keyword">byte</span>[] base64Data = Base64.getDecoder().decode(base64str);</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">// byte[] --&gt; string</span></span><br><span class="line">            str = <span class="keyword">new</span> String(base64Data, <span class="string">&quot;utf-8&quot;</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (UnsupportedEncodingException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> str;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        System.out.println(decode(<span class="keyword">new</span> StringBuffer(getFlag()).reverse().toString()));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://tuchang2021.oss-cn-beijing.aliyuncs.com/img/20210827171310.png" alt="flag"></p>
-<h1 id="言论"><a href="#言论" class="headerlink" title="言论"></a>言论</h1><p>失败很少是一种永久状态。失败后，继续前进就可以了。失败只是旅程中的一站，不要让它成为你的目的地。</p>
-<p>– <a href="https://historyofyesterday.com/the-first-delta-force-trainee-class-fc46a131fea2">《首届 Delta Force 训练班》</a></p>
-]]></content>
-      <categories>
-        <category>Writeup</category>
-      </categories>
-      <tags>
-        <tag>Reverse</tag>
-        <tag>Writeup</tag>
-        <tag>Andorid</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>科技爱好者文摘（2021年9月）</title>
     <url>/enthusiasm/digest/digest-21-09/</url>
-    <content><![CDATA[<p>这里记录值得分享的科技内容，不定时更新。<br>一般收录笔者平时网上冲浪时遇见的感兴趣的文章/软件/资源。</p>
+    <content><![CDATA[<p>这里记录值得分享的科技内容，不定时更新。<br />
+一般收录笔者平时网上冲浪时遇见的感兴趣的文章/软件/资源。</p>
 <span id="more"></span>
-
-<h1 id="文章"><a href="#文章" class="headerlink" title="文章"></a>文章</h1><ol>
+<h1 id="文章"><a class="markdownIt-Anchor" href="#文章"></a> 文章</h1>
+<ol>
 <li><a href="https://habr.com/en/post/574082/">绝对值的计算并不简单</a></li>
 </ol>
-<p>计算一个数的绝对值看起来似乎很简单：如果数字是负数，那么让它改变符号；否则，就让保持原样。<br>在 <code>Java</code> 中，它可能看起来像这样：</p>
+<p>计算一个数的绝对值看起来似乎很简单：如果数字是负数，那么让它改变符号；否则，就让保持原样。<br />
+在 <code>Java</code> 中，它可能看起来像这样：</p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">double</span> <span class="title">abs</span><span class="params">(<span class="keyword">double</span> value)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (value &lt; <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> -value;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> value;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>即使对于初级面试问题，这似乎也太容易了。这里有什么陷阱吗？<br>在 <a href="https://en.wikipedia.org/wiki/IEEE_754-2008"><code>IEEE-754</code></a> 标准中，特别是在 Java 中，有两个零 <code>+0.0</code> 和 <code>-0.0</code> 。<br>如果将 <code>1.0</code> 除以 <code>+0.0</code> 和 <code>-0.0</code> ，则会得到完全不同的答案 <code>+Infinity</code> 和 <code>-Infinity</code> 。然而，在比较运算中， <code>+0.0</code> 和 <code>-0.0</code> 是无法区分的。<br>因此，上面的实现不会删除 <code>-0.0</code> 输入的减号。这可能会导致意想不到的结果。例如：</p>
+<p>即使对于初级面试问题，这似乎也太容易了。这里有什么陷阱吗？<br />
+在 <a href="https://en.wikipedia.org/wiki/IEEE_754-2008"><code>IEEE-754</code></a> 标准中，特别是在 Java 中，有两个零 <code>+0.0</code> 和 <code>-0.0</code> 。<br />
+如果将 <code>1.0</code> 除以 <code>+0.0</code> 和 <code>-0.0</code> ，则会得到完全不同的答案 <code>+Infinity</code> 和 <code>-Infinity</code> 。然而，在比较运算中， <code>+0.0</code> 和 <code>-0.0</code> 是无法区分的。<br />
+因此，上面的实现不会删除 <code>-0.0</code> 输入的减号。这可能会导致意想不到的结果。例如：</p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">double</span> x = -<span class="number">0.0</span>;</span><br><span class="line"><span class="keyword">if</span> (<span class="number">1</span> / abs(x) &lt; <span class="number">0</span>) &#123;</span><br><span class="line">  System.out.println(<span class="string">&quot;oops&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><code>x</code> 模数的倒数不能为负，无论 <code>x</code> 值是多少。但在这种情况下，它可以。<br>如果您有虐待狂的情绪，请让您的应聘者在面试中写出 <code>abs</code> 方法。当他们写出一种像文章开头那样的方法时，你可以问他们是否有值 <code>x</code> 使条件 <code>1 / abs (x) &lt; 0</code> 为真。在这样的采访之后，就会有关于贵公司的传闻。<br>好的，我们发现了问题。现在，如何解决？<br>为了可靠地区分负零和正零，有一种 <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Double.html#compare-double-double-"><code>Double.compare</code></a> 方法：</p>
+<p><code>x</code> 模数的倒数不能为负，无论 <code>x</code> 值是多少。但在这种情况下，它可以。<br />
+如果您有虐待狂的情绪，请让您的应聘者在面试中写出 <code>abs</code> 方法。当他们写出一种像文章开头那样的方法时，你可以问他们是否有值 <code>x</code> 使条件 <code>1 / abs (x) &lt; 0</code> 为真。在这样的采访之后，就会有关于贵公司的传闻。<br />
+好的，我们发现了问题。现在，如何解决？<br />
+为了可靠地区分负零和正零，有一种 <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Double.html#compare-double-double-"><code>Double.compare</code></a> 方法：</p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">double</span> <span class="title">abs</span><span class="params">(<span class="keyword">double</span> value)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (value &lt; <span class="number">0</span> || Double.compare(value, -<span class="number">0.0</span>) == <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> -value;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> value;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这是解决这个问题的一种有效方法。然而，对于这样一个微不足道的操作，我们的方法变得非常慢。 <code>Double.compare</code> 实现并不是那么简单。它需要对正数进行两次额外比较，对 <code>-0.0</code> 进行三次比较，对 <code>+0.0</code> 进行多达四次比较。<br>我们可以少做点吗？事实证明，我们可以通过从 中减去它来将正零和负零变成正零 <code>0.0</code> ：</p>
+<p>这是解决这个问题的一种有效方法。然而，对于这样一个微不足道的操作，我们的方法变得非常慢。 <code>Double.compare</code> 实现并不是那么简单。它需要对正数进行两次额外比较，对 <code>-0.0</code> 进行三次比较，对 <code>+0.0</code> 进行多达四次比较。<br />
+我们可以少做点吗？事实证明，我们可以通过从 中减去它来将正零和负零变成正零 <code>0.0</code> ：</p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line">System.out.println(<span class="number">0.0</span>-(-<span class="number">0.0</span>)); <span class="comment">// 0.0</span></span><br><span class="line">System.out.println(<span class="number">0.0</span>-(+<span class="number">0.0</span>)); <span class="comment">// 0.0</span></span><br></pre></td></tr></table></figure>
-
 <p>因此，我们可以通过以下方式重写实现：</p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">double</span> <span class="title">abs</span><span class="params">(<span class="keyword">double</span> value)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (value &lt;= <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0.0</span> - value;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> value;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>我们知道分支是不好的。如果 CPU 分支预测器的猜测不正确，则代价可能非常高。<br>现在我们考虑是否能降到零分支。<br>如果我们查看 <code>IEEE-754</code> 格式的<a href="https://en.wikipedia.org/wiki/Double-precision_floating-point_format">双精度数的二进制</a>表示，我们可以看到符号只是一个最高有效位。因此，我们只需要无条件地清除这个最重要的位。在此操作期间，其余数字不会更改。在这方面，小数比整数更简单，其中负数通过二进制补码变成正数。我们可以通过 <code>&amp;</code> 使用正确掩码的操作清除最高有效位。此外，我们还需要将 <code>double</code> 类型数字重新解释为 <code>long</code> 类型并在操作后还原它(这可以通过 <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Double.html#longBitsToDouble-long-"><code>longBitsToDouble</code></a> 方法实现)：</p>
+<p>我们知道分支是不好的。如果 CPU 分支预测器的猜测不正确，则代价可能非常高。<br />
+现在我们考虑是否能降到零分支。<br />
+如果我们查看 <code>IEEE-754</code> 格式的<a href="https://en.wikipedia.org/wiki/Double-precision_floating-point_format">双精度数的二进制</a>表示，我们可以看到符号只是一个最高有效位。因此，我们只需要无条件地清除这个最重要的位。在此操作期间，其余数字不会更改。在这方面，小数比整数更简单，其中负数通过二进制补码变成正数。我们可以通过 <code>&amp;</code> 使用正确掩码的操作清除最高有效位。此外，我们还需要将 <code>double</code> 类型数字重新解释为 <code>long</code> 类型并在操作后还原它(这可以通过 <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Double.html#longBitsToDouble-long-"><code>longBitsToDouble</code></a> 方法实现)：</p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">double</span> <span class="title">abs</span><span class="params">(<span class="keyword">double</span> value)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> Double.longBitsToDouble(</span><br><span class="line">    Double.doubleToRawLongBits(value) &amp; <span class="number">0x7fffffffffffffffL</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这个实现根本不包含分支，分析表明该方法在某些条件下的吞吐量增加了 10%。之前的单分支实现在 Java 标准库中已经存在多年，但在即将到来的 <code>Java 18</code> 中，<a href="https://github.com/openjdk/jdk/pull/4711">改进版本</a>已经提交。<br>然而，在许多情况下，这些改进并不意味着什么。这是因为 <code>JIT</code> 编译器可以使用适当的汇编指令（如果可用），而完全忽略 <code>Java</code> 代码。但多亏了它，我可以写一篇（希望如此！）有趣的文章。</p>
-<h1 id="文摘"><a href="#文摘" class="headerlink" title="文摘"></a>文摘</h1><ol>
+<p>这个实现根本不包含分支，分析表明该方法在某些条件下的吞吐量增加了 10%。之前的单分支实现在 Java 标准库中已经存在多年，但在即将到来的 <code>Java 18</code> 中，<a href="https://github.com/openjdk/jdk/pull/4711">改进版本</a>已经提交。<br />
+然而，在许多情况下，这些改进并不意味着什么。这是因为 <code>JIT</code> 编译器可以使用适当的汇编指令（如果可用），而完全忽略 <code>Java</code> 代码。但多亏了它，我可以写一篇（希望如此！）有趣的文章。</p>
+<h1 id="文摘"><a class="markdownIt-Anchor" href="#文摘"></a> 文摘</h1>
+<ol>
 <li><a href="https://threadreaderapp.com/thread/1421078387376918529.html">浏览器标准被大公司左右</a></li>
 </ol>
-<p>最近这些年，浏览器开发商（比如谷歌和苹果）从 <code>W3C</code> 手中夺取了网络标准的控制权。<br>网络标准正越来越多由大公司来决定，而不是由标准化组织 <code>W3C</code> 来决定。<br>大公司为了自己的业务，让浏览器的功能不断膨胀，目标是让 <code>Web</code> 网站做到原生应用可以做的一切，这是一个巨大的错误。<br>大公司明白，添加到 Web 的功能越多，浏览器之间的竞争就会越少！<br>谁能跟上谷歌推出新标准的脚步？ <code>Mozilla</code> 不能，苹果不能，甚至微软也认输了，放弃自己开发浏览器引擎，直接采用了 <code>Chromium</code> 作为自家 <code>Edge</code> 浏览器的内核。<br>想象一下，现在有一家小公司试图从头开始编写一个 Web 浏览器。简直不可能！网络如此复杂，他别无选择，只能采用少数现有的浏览器引擎之一：<code>Chromium</code> 、 <code>WebKit</code> 、 <code>Gecko</code> 。<br>这就是现在的状况，浏览器市场的竞争正在越来越少。“每个人都必须采用 <code>Chromium</code> ，这正是谷歌的计划。<br>谁主导了浏览器引擎，谁就控制了互联网。即使 <code>Web</code> 标准是开放的，理论上允许任何人实现浏览器引擎。但是 <code>Web</code> 标准那么多、那么复杂，实际上没有人可以实现能与 <code>Chromium</code> 抗衡的浏览器引擎，那么这种开放也没有意义了。<br>现在的 Web 标准被大公司控制，已经沦为 <code>Chromium</code> 、 <code>WebKit</code> 、 <code>Gecko</code> 和它们各自怪癖的集合。以后怎么可能还会有新引擎？<br>如果没有新的人可以编写浏览器引擎，网络就不会是开放的。开放只是一种错觉。</p>
+<p>最近这些年，浏览器开发商（比如谷歌和苹果）从 <code>W3C</code> 手中夺取了网络标准的控制权。<br />
+网络标准正越来越多由大公司来决定，而不是由标准化组织 <code>W3C</code> 来决定。<br />
+大公司为了自己的业务，让浏览器的功能不断膨胀，目标是让 <code>Web</code> 网站做到原生应用可以做的一切，这是一个巨大的错误。<br />
+大公司明白，添加到 Web 的功能越多，浏览器之间的竞争就会越少！<br />
+谁能跟上谷歌推出新标准的脚步？ <code>Mozilla</code> 不能，苹果不能，甚至微软也认输了，放弃自己开发浏览器引擎，直接采用了 <code>Chromium</code> 作为自家 <code>Edge</code> 浏览器的内核。<br />
+想象一下，现在有一家小公司试图从头开始编写一个 Web 浏览器。简直不可能！网络如此复杂，他别无选择，只能采用少数现有的浏览器引擎之一：<code>Chromium</code> 、 <code>WebKit</code> 、 <code>Gecko</code> 。<br />
+这就是现在的状况，浏览器市场的竞争正在越来越少。“每个人都必须采用 <code>Chromium</code> ，这正是谷歌的计划。<br />
+谁主导了浏览器引擎，谁就控制了互联网。即使 <code>Web</code> 标准是开放的，理论上允许任何人实现浏览器引擎。但是 <code>Web</code> 标准那么多、那么复杂，实际上没有人可以实现能与 <code>Chromium</code> 抗衡的浏览器引擎，那么这种开放也没有意义了。<br />
+现在的 Web 标准被大公司控制，已经沦为 <code>Chromium</code> 、 <code>WebKit</code> 、 <code>Gecko</code> 和它们各自怪癖的集合。以后怎么可能还会有新引擎？<br />
+如果没有新的人可以编写浏览器引擎，网络就不会是开放的。开放只是一种错觉。</p>
 <p>来源：<a href="https://github.com/ruanyf/weekly/blob/master/docs/issue-177.md">科技爱好者周刊（第 177 期）：iPad 的真正用途</a></p>
-<h1 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h1><ol>
-<li><a href="https://neatnik.net/view-source/">View Source</a><br>一个 <code>Web</code> 小工具，输入网址，就可以高亮显示该网址的源码，非常好用。</li>
+<h1 id="工具"><a class="markdownIt-Anchor" href="#工具"></a> 工具</h1>
+<ol>
+<li><a href="https://neatnik.net/view-source/">View Source</a><br />
+一个 <code>Web</code> 小工具，输入网址，就可以高亮显示该网址的源码，非常好用。</li>
 </ol>
-<h1 id="言论"><a href="#言论" class="headerlink" title="言论"></a>言论</h1><p>一家印度电力公司的高管告诉我，印度面临的最大问题将是缺电，电力需求以历史上从未有过的速度增长。</p>
+<h1 id="言论"><a class="markdownIt-Anchor" href="#言论"></a> 言论</h1>
+<p>一家印度电力公司的高管告诉我，印度面临的最大问题将是缺电，电力需求以历史上从未有过的速度增长。</p>
 <p>因为印度的夏天太热了，而且变得越来越热，印度的中产阶级也越来越多。印度家庭有钱以后，第一件要买的东西不是汽车、电脑或平板电视，而是一台空调。</p>
 <p>– <a href="https://www.fastcompany.com/90667124/how-to-spot-tomorrows-macrotrends-before-they-change-everything">《如何提早发现宏观趋势》</a></p>
 ]]></content>
@@ -88,66 +74,117 @@
     <url>/computer-systems/study/csapp-note/</url>
     <content><![CDATA[<p>个人在阅读并学习《深入理解计算机系统》 中文电子版（原书第3版）时整理的学习笔记。</p>
 <span id="more"></span>
-
-<h1 id="第-1-章：计算机系统漫游"><a href="#第-1-章：计算机系统漫游" class="headerlink" title="第 1 章：计算机系统漫游"></a>第 1 章：计算机系统漫游</h1><h2 id="1-1-信息就是位-上下文"><a href="#1-1-信息就是位-上下文" class="headerlink" title="1.1 信息就是位 + 上下文"></a>1.1 信息就是位 + 上下文</h2><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// hello.c</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;hello, world\n&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>hello 程序的生命周期是从一个<strong>源程序</strong>（或者说源文件）开始的，即程序员通过编辑器创建并保存的文本文件，文件名是 hello.c。<br>像 hello.c 这样只由 ASCII 字符构成的文件称为<strong>文本文件</strong>，所有其他文件都称为<strong>二进制文件</strong>。<br>hello.c 的表示方法说明了一个基本思想∶系统中所有的信息——包括磁盘文件、内存中的程序、内存中存放的用户数据以及网络上传送的数据，都是由一串比特表示的。区分不同数据对象的唯一方法是我们读到这些数据对象时的上下文。</p>
-<h2 id="1-2-程序被其他程序翻译成不同的格式"><a href="#1-2-程序被其他程序翻译成不同的格式" class="headerlink" title="1.2 程序被其他程序翻译成不同的格式"></a>1.2 程序被其他程序翻译成不同的格式</h2><p>为了在系统上运行 hello.c 程序，每条 C 语句都必须被其他程序转化为一系列的低级<strong>机器语言</strong>指令。然后这些指令按照一种称为<strong>可执行目标程序</strong>的格式打好包，并以二进制磁盘文件的形式存放起来。目标程序也称为<strong>可执行目标文件</strong>。<br>在 Unix 系统上，从源文件到目标文件的转化是由<strong>编译器驱动程序</strong>完成的∶</p>
+<h1 id="第-1-章计算机系统漫游"><a class="markdownIt-Anchor" href="#第-1-章计算机系统漫游"></a> 第 1 章：计算机系统漫游</h1>
+<h2 id="11-信息就是位-上下文"><a class="markdownIt-Anchor" href="#11-信息就是位-上下文"></a> 1.1 信息就是位 + 上下文</h2>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// hello.c</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;hello, world\n&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>hello 程序的生命周期是从一个<strong>源程序</strong>（或者说源文件）开始的，即程序员通过编辑器创建并保存的文本文件，文件名是 hello.c。<br />
+像 hello.c 这样只由 ASCII 字符构成的文件称为<strong>文本文件</strong>，所有其他文件都称为<strong>二进制文件</strong>。<br />
+hello.c 的表示方法说明了一个基本思想∶系统中所有的信息——包括磁盘文件、内存中的程序、内存中存放的用户数据以及网络上传送的数据，都是由一串比特表示的。区分不同数据对象的唯一方法是我们读到这些数据对象时的上下文。</p>
+<h2 id="12-程序被其他程序翻译成不同的格式"><a class="markdownIt-Anchor" href="#12-程序被其他程序翻译成不同的格式"></a> 1.2 程序被其他程序翻译成不同的格式</h2>
+<p>为了在系统上运行 hello.c 程序，每条 C 语句都必须被其他程序转化为一系列的低级<strong>机器语言</strong>指令。然后这些指令按照一种称为<strong>可执行目标程序</strong>的格式打好包，并以二进制磁盘文件的形式存放起来。目标程序也称为<strong>可执行目标文件</strong>。<br />
+在 Unix 系统上，从源文件到目标文件的转化是由<strong>编译器驱动程序</strong>完成的∶</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">linux&gt;</span><span class="bash"> gcc -o hello hello.c</span></span><br></pre></td></tr></table></figure>
-
 <p>在这里，GCC 编译器驱动程序读取源程序文件 hello.c，并把它翻译成一个可执行目标文件 hello。这个翻译过程可分为四个阶段完成，如图 1-3 所示。执行这四个阶段的程序（<strong>预处理器、编译器、汇编器和链接器</strong>）一起构成了<strong>编译系统</strong>（compilation system）。</p>
-<p><img src="https://tuchang2021.oss-cn-beijing.aliyuncs.com/img/image-20211012193224501.png" alt="图 1-3 编译系统"></p>
-<h2 id="1-3-了解编译系统如何工作是大有益处的"><a href="#1-3-了解编译系统如何工作是大有益处的" class="headerlink" title="1.3 了解编译系统如何工作是大有益处的"></a>1.3 了解编译系统如何工作是大有益处的</h2><p>对于像 hello.c 这样简单的程序，我们可以依靠编译系统生成正确有效的机器代码。但是，有一些重要的原因促使程序员必须知道编译系统是如何工作的。</p>
+<p><img src="https://tuchang2021.oss-cn-beijing.aliyuncs.com/img/image-20211012193224501.png" alt="图 1-3 编译系统" /></p>
+<h2 id="13-了解编译系统如何工作是大有益处的"><a class="markdownIt-Anchor" href="#13-了解编译系统如何工作是大有益处的"></a> 1.3 了解编译系统如何工作是大有益处的</h2>
+<p>对于像 hello.c 这样简单的程序，我们可以依靠编译系统生成正确有效的机器代码。但是，有一些重要的原因促使程序员必须知道编译系统是如何工作的。</p>
 <ul>
 <li><strong>优化程序性能。</strong></li>
 <li><strong>理解链接时出现的错误。</strong></li>
 <li><strong>避免安全漏洞。</strong></li>
 </ul>
-<h2 id="1-4-处理器读并解释储存在内存中的指令"><a href="#1-4-处理器读并解释储存在内存中的指令" class="headerlink" title="1.4 处理器读并解释储存在内存中的指令"></a>1.4 处理器读并解释储存在内存中的指令</h2><p>此刻，hello.c 源程序已经被编译系统翻译成了可执行目标文件 hello，并被存放在磁盘上。要想在 Unix 系统上运行该可执行文件，我们将它的文件名输入到称为 shell 的应用程序中∶</p>
+<h2 id="14-处理器读并解释储存在内存中的指令"><a class="markdownIt-Anchor" href="#14-处理器读并解释储存在内存中的指令"></a> 1.4 处理器读并解释储存在内存中的指令</h2>
+<p>此刻，hello.c 源程序已经被编译系统翻译成了可执行目标文件 hello，并被存放在磁盘上。要想在 Unix 系统上运行该可执行文件，我们将它的文件名输入到称为 shell 的应用程序中∶</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">linux&gt;</span><span class="bash"> ./hello</span></span><br><span class="line">hello, world</span><br><span class="line"><span class="meta">linux&gt;</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="1-4-1-系统的硬件组成"><a href="#1-4-1-系统的硬件组成" class="headerlink" title="1.4.1 系统的硬件组成"></a>1.4.1 系统的硬件组成</h3><h4 id="1-总线"><a href="#1-总线" class="headerlink" title="1. 总线"></a>1. 总线</h4><p>贯穿整个系统的是一组电子管道，称作<strong>总线</strong>，它携带信息字节并负责在各个部件间传递。通常总线被设计成传送定长的字节块，也就是字（word）。现在的大多数机器字长要么是 4 个字节（32 位），要么是 8 个字节（64 位）。</p>
-<h4 id="2-I-O-设备"><a href="#2-I-O-设备" class="headerlink" title="2. I/O 设备"></a>2. I/O 设备</h4><p>I/O（输入/输出）设备是系统与外部世界的联系通道。每个 I/O 设备都通过一个控制器或适配器与 I/O 总线相连。</p>
-<p><img src="https://tuchang2021.oss-cn-beijing.aliyuncs.com/img/01-04%20system%20hardwares.png" alt="01-04 system hardwares"></p>
+<h3 id="141-系统的硬件组成"><a class="markdownIt-Anchor" href="#141-系统的硬件组成"></a> 1.4.1 系统的硬件组成</h3>
+<h4 id="1-总线"><a class="markdownIt-Anchor" href="#1-总线"></a> 1. 总线</h4>
+<p>贯穿整个系统的是一组电子管道，称作<strong>总线</strong>，它携带信息字节并负责在各个部件间传递。通常总线被设计成传送定长的字节块，也就是字（word）。现在的大多数机器字长要么是 4 个字节（32 位），要么是 8 个字节（64 位）。</p>
+<h4 id="2-io-设备"><a class="markdownIt-Anchor" href="#2-io-设备"></a> 2. I/O 设备</h4>
+<p>I/O（输入/输出）设备是系统与外部世界的联系通道。每个 I/O 设备都通过一个控制器或适配器与 I/O 总线相连。</p>
+<p><img src="https://tuchang2021.oss-cn-beijing.aliyuncs.com/img/01-04%20system%20hardwares.png" alt="01-04 system hardwares" /></p>
 <blockquote>
 <p>CPU：中央处理单元；ALU：算术/逻辑单元；PC：程序计数器；USB：通用串行总线</p>
 </blockquote>
-<h4 id="3-主存"><a href="#3-主存" class="headerlink" title="3. 主存"></a>3. 主存</h4><p><strong>主存</strong>是一个临时存储设备，在处理器执行程序时，用来存放程序和程序处理的数据。从物理上来说，主存是由一组<strong>动态随机存取存储器</strong>（DRAM）芯片组成的。从逻辑上来说，存储器是一个线性的字节数组，每个字节都有其唯一的地址（数组索引），这些地址是从零开始的。</p>
-<h4 id="4-处理器"><a href="#4-处理器" class="headerlink" title="4. 处理器"></a>4. 处理器</h4><p><strong>中央处理单元</strong>（CPU），简称<strong>处理器</strong>，是解释（或执行）存储在主存中指令的引擎。处理器的核心是一个大小为一个字的存储设备（或<strong>寄存器</strong>），称为<strong>程序计数器</strong>（PC）。在任何时刻，PC 都指向主存中的某条机器语言指令（即含有该条指令的地址）。<br>从系统通电开始，直到系统断电，处理器一直在不断地执行程序计数器指向的指令，再更新程序计数器，使其指向下一条指令。这样的简单操作并不多，它们围绕着主存、<strong>寄存器文件</strong>（register file）和<strong>算术/逻辑单元</strong>（ALU）进行。寄存器文件是一个小的存储设备，由一些单个字长的寄存器组成，每个寄存器都有唯一的名字。ALU 计算新的数据和地址值。<br>处理器看上去是它的指令集架构的简单实现，但是实际上现代处理器使用了非常复杂的机制来加速程序的执行。因此，我们将处理器的指令集架构和处理器的<strong>微体系结构</strong>区分开来：指令集架构描述的是每条机器代码指令的效果；而微体系结构描述的是处理器实际上是如何实现的。</p>
-<h3 id="1-4-2-运行-hello-程序"><a href="#1-4-2-运行-hello-程序" class="headerlink" title="1.4.2 运行 hello 程序"></a>1.4.2 运行 hello 程序</h3><p>当我们在键盘上输人字符串 “./hello” 后，shell 程序将字符逐一读入寄存器，再把它存放到内存中，如图 1-5 所示。</p>
-<p><img src="https://tuchang2021.oss-cn-beijing.aliyuncs.com/img/01-05%20read%20hello%20from%20keyboard.png" alt="01-05 read hello from keyboard"></p>
+<h4 id="3-主存"><a class="markdownIt-Anchor" href="#3-主存"></a> 3. 主存</h4>
+<p><strong>主存</strong>是一个临时存储设备，在处理器执行程序时，用来存放程序和程序处理的数据。从物理上来说，主存是由一组<strong>动态随机存取存储器</strong>（DRAM）芯片组成的。从逻辑上来说，存储器是一个线性的字节数组，每个字节都有其唯一的地址（数组索引），这些地址是从零开始的。</p>
+<h4 id="4-处理器"><a class="markdownIt-Anchor" href="#4-处理器"></a> 4. 处理器</h4>
+<p><strong>中央处理单元</strong>（CPU），简称<strong>处理器</strong>，是解释（或执行）存储在主存中指令的引擎。处理器的核心是一个大小为一个字的存储设备（或<strong>寄存器</strong>），称为<strong>程序计数器</strong>（PC）。在任何时刻，PC 都指向主存中的某条机器语言指令（即含有该条指令的地址）。<br />
+从系统通电开始，直到系统断电，处理器一直在不断地执行程序计数器指向的指令，再更新程序计数器，使其指向下一条指令。这样的简单操作并不多，它们围绕着主存、<strong>寄存器文件</strong>（register file）和<strong>算术/逻辑单元</strong>（ALU）进行。寄存器文件是一个小的存储设备，由一些单个字长的寄存器组成，每个寄存器都有唯一的名字。ALU 计算新的数据和地址值。<br />
+处理器看上去是它的指令集架构的简单实现，但是实际上现代处理器使用了非常复杂的机制来加速程序的执行。因此，我们将处理器的指令集架构和处理器的<strong>微体系结构</strong>区分开来：指令集架构描述的是每条机器代码指令的效果；而微体系结构描述的是处理器实际上是如何实现的。</p>
+<h3 id="142-运行-hello-程序"><a class="markdownIt-Anchor" href="#142-运行-hello-程序"></a> 1.4.2 运行 hello 程序</h3>
+<p>当我们在键盘上输人字符串 “./hello” 后，shell 程序将字符逐一读入寄存器，再把它存放到内存中，如图 1-5 所示。</p>
+<p><img src="https://tuchang2021.oss-cn-beijing.aliyuncs.com/img/01-05%20read%20hello%20from%20keyboard.png" alt="01-05 read hello from keyboard" /></p>
 <p>利用<strong>直接存储器存取</strong>（DMA，将在第 6 章中讨论）技术，数据可以不通过处理器而直接从磁盘到达主存。这个步骤如图 1-6 所示。</p>
-<p><img src="https://tuchang2021.oss-cn-beijing.aliyuncs.com/img/01-06%20%E4%BB%8E%E7%A3%81%E7%9B%98%E5%8A%A0%E8%BD%BD%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E5%88%B0%E4%B8%BB%E5%AD%98.png" alt="01-06 从磁盘加载可执行文件到主存"></p>
+<p><img src="https://tuchang2021.oss-cn-beijing.aliyuncs.com/img/01-06%20%E4%BB%8E%E7%A3%81%E7%9B%98%E5%8A%A0%E8%BD%BD%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E5%88%B0%E4%B8%BB%E5%AD%98.png" alt="01-06 从磁盘加载可执行文件到主存" /></p>
 <p>这些指令将 “hello, world\n” 字符串中的字节从主存复制到寄存器文件，再从寄存器文件中复制到显示设备，最终显示在屏幕上。这个步骤如图 1-7 所示。</p>
-<p><img src="https://tuchang2021.oss-cn-beijing.aliyuncs.com/img/01-07%20%E5%B0%86%E8%BE%93%E5%87%BA%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%BB%8E%E5%AD%98%E5%82%A8%E5%99%A8%E5%86%99%E5%88%B0%E6%98%BE%E7%A4%BA%E5%99%A8.png" alt="01-07 将输出字符串从存储器写到显示器"></p>
-<h2 id="1-5-高速缓存至关重要"><a href="#1-5-高速缓存至关重要" class="headerlink" title="1.5 高速缓存至关重要"></a>1.5 高速缓存至关重要</h2><p>这个简单的示例揭示了一个重要的问题，即系统花费了大量的时间把信息从一个地方挪到另一个地方。因此，系统设计者的一个主要目标就是使这些复制操作尽可能快地完成。<br>根据机械原理，较大的存储设备要比较小的存储设备运行得慢，而快速设备的造价远高于同类的低速设备。<br>类似地，一个典型的寄存器文件只存储几百字节的信息，而主存里可存放几十亿字节。然而，处理器从寄存器文件中读数据比从主存中读取几乎要快 100 倍。更麻烦的是，随着这些年半导体技术的进步，这种处理器与主存之间的差距还在持续增大。加快处理器的运行速度比加快主存的运行速度要容易和便宜得多。<br>针对处理器与主存之间的差异，系统设计者采用了更小更快的存储设备，称为<strong>高速缓存存储器</strong>（cache memory，简称为 cache 或高速缓存），作为暂时的集结区域，存放处理器近期可能会需要的信息。<br>图 1-8 展示了一个典型系统中的高速缓存存储器。位于处理器芯片上的 L1 高速缓存的容量可以达到数万字节，访问速度几乎和访问寄存器文件一样快。一个容量为数十万到数百万字节的更大的 L2 高速缓存通过一条特殊的总线连接到处理器。进程访问 L2 高速缓存的时间要比访问 L1 高速缓存的时间长 5 倍，但是这仍然比访问主存的时间快 5~10 倍。L1 和 L2 高速缓存是用一种叫做<strong>静态随机访问存储器</strong>（SRAM）的硬件技术实现的。<br>比较新的、处理能力更强大的系统甚至有三级高速缓存∶L1、L2 和 L3。系统可以获得一个很大的存储器，同时访问速度也很快，原因是利用了高速缓存的局部性原理，即程序具有访问局部区域里的数据和代码的趋势。通过让高速缓存里存放可能经常访问的数据，大部分的内存操作都能在快速的高速缓存中完成。</p>
-<p><img src="https://tuchang2021.oss-cn-beijing.aliyuncs.com/img/01-08%20%E9%AB%98%E9%80%9F%E7%BC%93%E5%AD%98%E5%AD%98%E5%82%A8%E5%99%A8.png" alt="01-08 高速缓存存储器"></p>
+<p><img src="https://tuchang2021.oss-cn-beijing.aliyuncs.com/img/01-07%20%E5%B0%86%E8%BE%93%E5%87%BA%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%BB%8E%E5%AD%98%E5%82%A8%E5%99%A8%E5%86%99%E5%88%B0%E6%98%BE%E7%A4%BA%E5%99%A8.png" alt="01-07 将输出字符串从存储器写到显示器" /></p>
+<h2 id="15-高速缓存至关重要"><a class="markdownIt-Anchor" href="#15-高速缓存至关重要"></a> 1.5 高速缓存至关重要</h2>
+<p>这个简单的示例揭示了一个重要的问题，即系统花费了大量的时间把信息从一个地方挪到另一个地方。因此，系统设计者的一个主要目标就是使这些复制操作尽可能快地完成。<br />
+根据机械原理，较大的存储设备要比较小的存储设备运行得慢，而快速设备的造价远高于同类的低速设备。<br />
+类似地，一个典型的寄存器文件只存储几百字节的信息，而主存里可存放几十亿字节。然而，处理器从寄存器文件中读数据比从主存中读取几乎要快 100 倍。更麻烦的是，随着这些年半导体技术的进步，这种处理器与主存之间的差距还在持续增大。加快处理器的运行速度比加快主存的运行速度要容易和便宜得多。<br />
+针对处理器与主存之间的差异，系统设计者采用了更小更快的存储设备，称为<strong>高速缓存存储器</strong>（cache memory，简称为 cache 或高速缓存），作为暂时的集结区域，存放处理器近期可能会需要的信息。<br />
+图 1-8 展示了一个典型系统中的高速缓存存储器。位于处理器芯片上的 L1 高速缓存的容量可以达到数万字节，访问速度几乎和访问寄存器文件一样快。一个容量为数十万到数百万字节的更大的 L2 高速缓存通过一条特殊的总线连接到处理器。进程访问 L2 高速缓存的时间要比访问 L1 高速缓存的时间长 5 倍，但是这仍然比访问主存的时间快 5~10 倍。L1 和 L2 高速缓存是用一种叫做<strong>静态随机访问存储器</strong>（SRAM）的硬件技术实现的。<br />
+比较新的、处理能力更强大的系统甚至有三级高速缓存∶L1、L2 和 L3。系统可以获得一个很大的存储器，同时访问速度也很快，原因是利用了高速缓存的局部性原理，即程序具有访问局部区域里的数据和代码的趋势。通过让高速缓存里存放可能经常访问的数据，大部分的内存操作都能在快速的高速缓存中完成。</p>
+<p><img src="https://tuchang2021.oss-cn-beijing.aliyuncs.com/img/01-08%20%E9%AB%98%E9%80%9F%E7%BC%93%E5%AD%98%E5%AD%98%E5%82%A8%E5%99%A8.png" alt="01-08 高速缓存存储器" /></p>
 <p>本书得出的重要结论之一就是，意识到高速缓存存储器存在的应用程序员能够利用高速缓存将程序的性能提高一个数量级。</p>
-<h2 id="1-6-存储设备形成层次结构"><a href="#1-6-存储设备形成层次结构" class="headerlink" title="1.6 存储设备形成层次结构"></a>1.6 存储设备形成层次结构</h2><p>在处理器和一个较大较慢的设备（例如主存）之间插入一个更小更快的存储设备（例如高速缓存）的想法已经成为一个普遍的观念。<br><strong>存储器层次结构</strong>的主要思想是上一层的存储器作为低一层存储器的高速缓存。</p>
-<p><img src="https://tuchang2021.oss-cn-beijing.aliyuncs.com/img/01-09%20%E4%B8%80%E4%B8%AA%E5%AD%98%E5%82%A8%E5%99%A8%E5%B1%82%E6%AC%A1%E7%BB%93%E6%9E%84%E7%9A%84%E7%A4%BA%E4%BE%8B.png" alt="01-09 一个存储器层次结构的示例"></p>
-<h2 id="1-7-操作系统管理硬件"><a href="#1-7-操作系统管理硬件" class="headerlink" title="1.7 操作系统管理硬件"></a>1.7 操作系统管理硬件</h2><p>所有应用程序对硬件的操作尝试都必须通过操作系统。</p>
-<p><img src="https://tuchang2021.oss-cn-beijing.aliyuncs.com/img/01-10%20%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%88%86%E5%B1%82%E8%A7%86%E5%9B%BE.png" alt="01-10 计算机系统的分层视图"></p>
-<p>操作系统有两个基本功能∶<br>1.防止硬件被失控的应用程序滥用；<br>2.向应用程序提供简单一致的机制来控制复杂而又通常大不相同的低级硬件设备。<br>操作系统通过几个基本的抽象概念（<strong>进程、虚拟内存和文件</strong>）来实现这两个功能。</p>
-<p><img src="https://tuchang2021.oss-cn-beijing.aliyuncs.com/img/01-11%20%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E6%8F%90%E4%BE%9B%E7%9A%84%E6%8A%BD%E8%B1%A1%E8%A1%A8%E7%A4%BA.png" alt="01-11 操作系统提供的抽象表示"></p>
-<h3 id="1-7-1-进程"><a href="#1-7-1-进程" class="headerlink" title="1.7.1 进程"></a>1.7.1 进程</h3><p><strong>进程</strong>是操作系统对一个正在运行的程序的一种抽象。在一个系统上可以同时运行多个进程，而每个进程都好像在独占地使用硬件。<br>而<strong>并发运行</strong>，则是说一个进程的指令和另一个进程的指令是交错执行的。<br>无论是在单核还是多核系统中，一个 CPU 看上去都像是在并发地执行多个进程，这是通过处理器在进程间切换来实现的。操作系统实现这种交错执行的机制称为<strong>上下文切换</strong>。<br>操作系统保持跟踪进程运行所需的所有状态信息。这种状态，也就是<strong>上下文</strong>，包括许多信息，比如 PC 和寄存器文件的当前值，以及主存的内容。<br>在任何一个时刻，单处理器系统都只能执行一个进程的代码。<br>当操作系统决定要把控制权从当前进程转移到某个新进程时，就会进行<strong>上下文切换</strong>，即保存当前进程的上下文、恢复新进程的上下文，然后将控制权传递到新进程。新进程就会从它上次停止的地方开始。<br>从一个进程到另一个进程的转换是由操作系统<strong>内核</strong>（kernel）管理的。内核是操作系统代码常驻主存的部分。<br>当应用程序需要操作系统的某些操作时，比如读写文件，它就执行一条特殊的<strong>系统调用</strong>（system call）指令，将控制权传递给内核。然后内核执行被请求的操作并返回应用程序。</p>
-<p><img src="https://tuchang2021.oss-cn-beijing.aliyuncs.com/img/01-12%20%E8%BF%9B%E7%A8%8B%E7%9A%84%E4%B8%8A%E4%B8%8B%E6%96%87%E5%88%87%E6%8D%A2.png" alt="01-12 进程的上下文切换"></p>
-<h3 id="1-7-2-线程"><a href="#1-7-2-线程" class="headerlink" title="1.7.2 线程"></a>1.7.2 线程</h3><p>在现代系统中，一个进程实际上可以由多个称为<strong>线程</strong>的执行单元组成，每个线程都运行在进程的上下文中，并共享同样的代码和全局数据。</p>
-<h3 id="1-7-3-虚拟电路"><a href="#1-7-3-虚拟电路" class="headerlink" title="1.7.3 虚拟电路"></a>1.7.3 虚拟电路</h3><p>虚拟内存是一个抽象概念，它为每个进程提供了一个假象，即每个进程都在独占地使用主存。每个进程看到的内存都是一致的，称为虚拟地址空间。</p>
-<p><img src="https://tuchang2021.oss-cn-beijing.aliyuncs.com/img/01-13%20%E8%BF%9B%E7%A8%8B%E7%9A%84%E8%99%9A%E6%8B%9F%E5%9C%B0%E5%9D%80%E7%A9%BA%E9%97%B4.png" alt="01-13 进程的虚拟地址空间"></p>
+<h2 id="16-存储设备形成层次结构"><a class="markdownIt-Anchor" href="#16-存储设备形成层次结构"></a> 1.6 存储设备形成层次结构</h2>
+<p>在处理器和一个较大较慢的设备（例如主存）之间插入一个更小更快的存储设备（例如高速缓存）的想法已经成为一个普遍的观念。<br />
+<strong>存储器层次结构</strong>的主要思想是上一层的存储器作为低一层存储器的高速缓存。</p>
+<p><img src="https://tuchang2021.oss-cn-beijing.aliyuncs.com/img/01-09%20%E4%B8%80%E4%B8%AA%E5%AD%98%E5%82%A8%E5%99%A8%E5%B1%82%E6%AC%A1%E7%BB%93%E6%9E%84%E7%9A%84%E7%A4%BA%E4%BE%8B.png" alt="01-09 一个存储器层次结构的示例" /></p>
+<h2 id="17-操作系统管理硬件"><a class="markdownIt-Anchor" href="#17-操作系统管理硬件"></a> 1.7 操作系统管理硬件</h2>
+<p>所有应用程序对硬件的操作尝试都必须通过操作系统。</p>
+<p><img src="https://tuchang2021.oss-cn-beijing.aliyuncs.com/img/01-10%20%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%88%86%E5%B1%82%E8%A7%86%E5%9B%BE.png" alt="01-10 计算机系统的分层视图" /></p>
+<p>操作系统有两个基本功能∶<br />
+1.防止硬件被失控的应用程序滥用；<br />
+2.向应用程序提供简单一致的机制来控制复杂而又通常大不相同的低级硬件设备。<br />
+操作系统通过几个基本的抽象概念（<strong>进程、虚拟内存和文件</strong>）来实现这两个功能。</p>
+<p><img src="https://tuchang2021.oss-cn-beijing.aliyuncs.com/img/01-11%20%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E6%8F%90%E4%BE%9B%E7%9A%84%E6%8A%BD%E8%B1%A1%E8%A1%A8%E7%A4%BA.png" alt="01-11 操作系统提供的抽象表示" /></p>
+<h3 id="171-进程"><a class="markdownIt-Anchor" href="#171-进程"></a> 1.7.1 进程</h3>
+<p><strong>进程</strong>是操作系统对一个正在运行的程序的一种抽象。在一个系统上可以同时运行多个进程，而每个进程都好像在独占地使用硬件。<br />
+而<strong>并发运行</strong>，则是说一个进程的指令和另一个进程的指令是交错执行的。<br />
+无论是在单核还是多核系统中，一个 CPU 看上去都像是在并发地执行多个进程，这是通过处理器在进程间切换来实现的。操作系统实现这种交错执行的机制称为<strong>上下文切换</strong>。<br />
+操作系统保持跟踪进程运行所需的所有状态信息。这种状态，也就是<strong>上下文</strong>，包括许多信息，比如 PC 和寄存器文件的当前值，以及主存的内容。<br />
+在任何一个时刻，单处理器系统都只能执行一个进程的代码。<br />
+当操作系统决定要把控制权从当前进程转移到某个新进程时，就会进行<strong>上下文切换</strong>，即保存当前进程的上下文、恢复新进程的上下文，然后将控制权传递到新进程。新进程就会从它上次停止的地方开始。<br />
+从一个进程到另一个进程的转换是由操作系统<strong>内核</strong>（kernel）管理的。内核是操作系统代码常驻主存的部分。<br />
+当应用程序需要操作系统的某些操作时，比如读写文件，它就执行一条特殊的<strong>系统调用</strong>（system call）指令，将控制权传递给内核。然后内核执行被请求的操作并返回应用程序。</p>
+<p><img src="https://tuchang2021.oss-cn-beijing.aliyuncs.com/img/01-12%20%E8%BF%9B%E7%A8%8B%E7%9A%84%E4%B8%8A%E4%B8%8B%E6%96%87%E5%88%87%E6%8D%A2.png" alt="01-12 进程的上下文切换" /></p>
+<h3 id="172-线程"><a class="markdownIt-Anchor" href="#172-线程"></a> 1.7.2 线程</h3>
+<p>在现代系统中，一个进程实际上可以由多个称为<strong>线程</strong>的执行单元组成，每个线程都运行在进程的上下文中，并共享同样的代码和全局数据。</p>
+<h3 id="173-虚拟电路"><a class="markdownIt-Anchor" href="#173-虚拟电路"></a> 1.7.3 虚拟电路</h3>
+<p>虚拟内存是一个抽象概念，它为每个进程提供了一个假象，即每个进程都在独占地使用主存。每个进程看到的内存都是一致的，称为虚拟地址空间。</p>
+<p><img src="https://tuchang2021.oss-cn-beijing.aliyuncs.com/img/01-13%20%E8%BF%9B%E7%A8%8B%E7%9A%84%E8%99%9A%E6%8B%9F%E5%9C%B0%E5%9D%80%E7%A9%BA%E9%97%B4.png" alt="01-13 进程的虚拟地址空间" /></p>
 <ul>
-<li><strong>程序代码和数据。</strong>对所有的进程来说，代码是从同一固定地址开始，紧接着的是和 C 全局变量相对应的数据位置。代码和数据区是直接按照可执行目标文件的内容初始化的。</li>
-<li><strong>堆。</strong>代码和数据区后紧随着的是运行时堆。代码和数据区在进程一开始运行时就被指定了大小，与此不同，当调用像 malloc 和 free 这样的 C 标准库函数时，堆可以在运行时动态地扩展和收缩。</li>
-<li><strong>共享库。</strong>大约在地址空间的中间部分是一块用来存放像 C 标准库和数学库这样的共享库的代码和数据的区域。</li>
-<li><strong>栈。</strong>位于用户虚拟地址空间顶部的是<strong>用户栈</strong>，编译器用它来实现函数调用。和堆一样，用户栈在程序执行期间可以动态地扩展和收缩。特别地，每次我们调用一个函数时，栈就会增长；从一个函数返回时，栈就会收缩。</li>
-<li><strong>内核虚拟内存。</strong>地址空间顶部的区域是为内核保留的。不允许应用程序读写这个区域的内容或者直接调用内核代码定义的函数。相反，它们必须调用内核来执行这些操作。<br>虚拟内存的运作需要硬件和操作系统软件之间精密复杂的交互，包括对处理器生成的每个地址的硬件翻译。基本思想是把一个进程虚拟内存的内容存储在磁盘上，然后用主存作为磁盘的高速缓存。</li>
+<li>**程序代码和数据。**对所有的进程来说，代码是从同一固定地址开始，紧接着的是和 C 全局变量相对应的数据位置。代码和数据区是直接按照可执行目标文件的内容初始化的。</li>
+<li>**堆。**代码和数据区后紧随着的是运行时堆。代码和数据区在进程一开始运行时就被指定了大小，与此不同，当调用像 malloc 和 free 这样的 C 标准库函数时，堆可以在运行时动态地扩展和收缩。</li>
+<li>**共享库。**大约在地址空间的中间部分是一块用来存放像 C 标准库和数学库这样的共享库的代码和数据的区域。</li>
+<li><strong>栈。<strong>位于用户虚拟地址空间顶部的是</strong>用户栈</strong>，编译器用它来实现函数调用。和堆一样，用户栈在程序执行期间可以动态地扩展和收缩。特别地，每次我们调用一个函数时，栈就会增长；从一个函数返回时，栈就会收缩。</li>
+<li>**内核虚拟内存。**地址空间顶部的区域是为内核保留的。不允许应用程序读写这个区域的内容或者直接调用内核代码定义的函数。相反，它们必须调用内核来执行这些操作。<br />
+虚拟内存的运作需要硬件和操作系统软件之间精密复杂的交互，包括对处理器生成的每个地址的硬件翻译。基本思想是把一个进程虚拟内存的内容存储在磁盘上，然后用主存作为磁盘的高速缓存。</li>
 </ul>
-<h3 id="1-7-4-文件"><a href="#1-7-4-文件" class="headerlink" title="1.7.4 文件"></a>1.7.4 文件</h3><p>文件就是字节序列，仅此而已。每个I/O设备，包括磁盘、键盘、显示器，甚至网络，都可以看成是文件。系统中的所有输入输出都是通过使用一小组称为 Unix I/O 的系统函数调用读写文件来实现的。</p>
-<h3 id="1-8-系统之间利用网络通信"><a href="#1-8-系统之间利用网络通信" class="headerlink" title="1.8 系统之间利用网络通信"></a>1.8 系统之间利用网络通信</h3><p>现代系统经常通过网络和其他系统连接到一起。从一个单独的系统来看，网络可视为一个 I/O 设备。<br>当系统从主存复制一串字节到网络适配器时，数据流经过网络到达另一台机器，而不是比如说到达本地磁盘驱动器。相似地，系统可以读取从其他机器发送来的数据，并把数据复制到自己的主存。</p>
-<p><img src="https://tuchang2021.oss-cn-beijing.aliyuncs.com/img/01-14%20%E7%BD%91%E7%BB%9C%E4%B9%9F%E6%98%AF%E4%B8%80%E7%A7%8DIO%E8%AE%BE%E5%A4%87.png" alt="01-14 网络也是一种IO设备"></p>
-<p>我们可以使用熟悉的 telnet 应用在一个远程主机上运行 hello 程序。<br>假设用本地主机上的 telnet 客户端连接远程主机上的 telnet 服务器。在我们登录到远程主机并运行 shell 后，远端的 shell 就在等待接收输入命令。</p>
-<p><img src="https://tuchang2021.oss-cn-beijing.aliyuncs.com/img/01-15%20%E5%88%A9%E7%94%A8telnet%E9%80%9A%E8%BF%87%E7%BD%91%E7%BB%9C%E8%BF%9C%E7%A8%8B%E8%BF%90%E8%A1%8Chello.png" alt="01-15 利用telnet通过网络远程运行hello"></p>
-<h3 id="1-9-重要主题"><a href="#1-9-重要主题" class="headerlink" title="1.9 重要主题"></a>1.9 重要主题</h3><h3 id="1-9-1-Amdahl-定律"><a href="#1-9-1-Amdahl-定律" class="headerlink" title="1.9.1 Amdahl 定律"></a>1.9.1 Amdahl 定律</h3><h3 id="1-9-2-并发和并行"><a href="#1-9-2-并发和并行" class="headerlink" title="1.9.2 并发和并行"></a>1.9.2 并发和并行</h3><h4 id="1-线程级并发"><a href="#1-线程级并发" class="headerlink" title="1. 线程级并发"></a>1. 线程级并发</h4><h4 id="2-指令级并行"><a href="#2-指令级并行" class="headerlink" title="2. 指令级并行"></a>2. 指令级并行</h4><h4 id="3-单指令、多数据并行"><a href="#3-单指令、多数据并行" class="headerlink" title="3. 单指令、多数据并行"></a>3. 单指令、多数据并行</h4><h3 id="1-9-3-计算机系统中抽象的重要性"><a href="#1-9-3-计算机系统中抽象的重要性" class="headerlink" title="1.9.3 计算机系统中抽象的重要性"></a>1.9.3 计算机系统中抽象的重要性</h3><h3 id="1-10-小结"><a href="#1-10-小结" class="headerlink" title="1.10 小结"></a>1.10 小结</h3><p>计算机系统是由硬件和系统软件组成的，它们共同协作以运行应用程序。计算机内部的信息被表示为一组组的位，它们依据上下文有不同的解释方式。程序被其他程序翻译成不同的形式，开始时是 ASCII 文本，然后被编译器和链接器翻译成二进制可执行文件。<br>处理器读取并解释存放在主存里的二进制指令。因为计算机花费了大量的时间在内存、I/O 设备和 CPU 寄存器之间复制数据，所以将系统中的存储设备划分成层次结构——CPU 寄存器在顶部，接着是多层的硬件高速缓存存储器、DRAM 主存和磁盘存储器。在层次模型中，位于更高层的存储设备比低层的存储设备要更快，单位比特造价也更高。层次结构中较高层次的存储设备可以作为较低层次设备的高速缓存。通过理解和运用这种存储层次结构的知识，程序员可以优化C程序的性能。<br>操作系统内核是应用程序和硬件之间的媒介。它提供三个基本的抽象∶1）文件是对 I/O 设备的抽象；2）虚拟内存是对主存和磁盘的抽象；3）进程是处理器、主存和 I/O 设备的抽象。<br>最后，网络提供了计算机系统之间通信的手段。从特殊系统的角度来看，网络就是一种 I/O 设备。</p>
-<h1 id="言论"><a href="#言论" class="headerlink" title="言论"></a>言论</h1><p>游戏分成两种。一种是有限游戏，另一种是无限游戏。有限游戏的目的是获胜，某方获胜就结束了，无限游戏的目的是继续游戏，你玩这个游戏是为了可以继续玩下去。</p>
+<h3 id="174-文件"><a class="markdownIt-Anchor" href="#174-文件"></a> 1.7.4 文件</h3>
+<p>文件就是字节序列，仅此而已。每个I/O设备，包括磁盘、键盘、显示器，甚至网络，都可以看成是文件。系统中的所有输入输出都是通过使用一小组称为 Unix I/O 的系统函数调用读写文件来实现的。</p>
+<h3 id="18-系统之间利用网络通信"><a class="markdownIt-Anchor" href="#18-系统之间利用网络通信"></a> 1.8 系统之间利用网络通信</h3>
+<p>现代系统经常通过网络和其他系统连接到一起。从一个单独的系统来看，网络可视为一个 I/O 设备。<br />
+当系统从主存复制一串字节到网络适配器时，数据流经过网络到达另一台机器，而不是比如说到达本地磁盘驱动器。相似地，系统可以读取从其他机器发送来的数据，并把数据复制到自己的主存。</p>
+<p><img src="https://tuchang2021.oss-cn-beijing.aliyuncs.com/img/01-14%20%E7%BD%91%E7%BB%9C%E4%B9%9F%E6%98%AF%E4%B8%80%E7%A7%8DIO%E8%AE%BE%E5%A4%87.png" alt="01-14 网络也是一种IO设备" /></p>
+<p>我们可以使用熟悉的 telnet 应用在一个远程主机上运行 hello 程序。<br />
+假设用本地主机上的 telnet 客户端连接远程主机上的 telnet 服务器。在我们登录到远程主机并运行 shell 后，远端的 shell 就在等待接收输入命令。</p>
+<p><img src="https://tuchang2021.oss-cn-beijing.aliyuncs.com/img/01-15%20%E5%88%A9%E7%94%A8telnet%E9%80%9A%E8%BF%87%E7%BD%91%E7%BB%9C%E8%BF%9C%E7%A8%8B%E8%BF%90%E8%A1%8Chello.png" alt="01-15 利用telnet通过网络远程运行hello" /></p>
+<h3 id="19-重要主题"><a class="markdownIt-Anchor" href="#19-重要主题"></a> 1.9 重要主题</h3>
+<h3 id="191-amdahl-定律"><a class="markdownIt-Anchor" href="#191-amdahl-定律"></a> 1.9.1 Amdahl 定律</h3>
+<h3 id="192-并发和并行"><a class="markdownIt-Anchor" href="#192-并发和并行"></a> 1.9.2 并发和并行</h3>
+<h4 id="1-线程级并发"><a class="markdownIt-Anchor" href="#1-线程级并发"></a> 1. 线程级并发</h4>
+<h4 id="2-指令级并行"><a class="markdownIt-Anchor" href="#2-指令级并行"></a> 2. 指令级并行</h4>
+<h4 id="3-单指令-多数据并行"><a class="markdownIt-Anchor" href="#3-单指令-多数据并行"></a> 3. 单指令、多数据并行</h4>
+<h3 id="193-计算机系统中抽象的重要性"><a class="markdownIt-Anchor" href="#193-计算机系统中抽象的重要性"></a> 1.9.3 计算机系统中抽象的重要性</h3>
+<h3 id="110-小结"><a class="markdownIt-Anchor" href="#110-小结"></a> 1.10 小结</h3>
+<p>计算机系统是由硬件和系统软件组成的，它们共同协作以运行应用程序。计算机内部的信息被表示为一组组的位，它们依据上下文有不同的解释方式。程序被其他程序翻译成不同的形式，开始时是 ASCII 文本，然后被编译器和链接器翻译成二进制可执行文件。<br />
+处理器读取并解释存放在主存里的二进制指令。因为计算机花费了大量的时间在内存、I/O 设备和 CPU 寄存器之间复制数据，所以将系统中的存储设备划分成层次结构——CPU 寄存器在顶部，接着是多层的硬件高速缓存存储器、DRAM 主存和磁盘存储器。在层次模型中，位于更高层的存储设备比低层的存储设备要更快，单位比特造价也更高。层次结构中较高层次的存储设备可以作为较低层次设备的高速缓存。通过理解和运用这种存储层次结构的知识，程序员可以优化C程序的性能。<br />
+操作系统内核是应用程序和硬件之间的媒介。它提供三个基本的抽象∶1）文件是对 I/O 设备的抽象；2）虚拟内存是对主存和磁盘的抽象；3）进程是处理器、主存和 I/O 设备的抽象。<br />
+最后，网络提供了计算机系统之间通信的手段。从特殊系统的角度来看，网络就是一种 I/O 设备。</p>
+<h1 id="言论"><a class="markdownIt-Anchor" href="#言论"></a> 言论</h1>
+<p>游戏分成两种。一种是有限游戏，另一种是无限游戏。有限游戏的目的是获胜，某方获胜就结束了，无限游戏的目的是继续游戏，你玩这个游戏是为了可以继续玩下去。</p>
 <p>– <a href="https://www.indiehackers.com/post/infinite-entrepreneurship-da92f36f21">《无限创业》</a></p>
 ]]></content>
       <categories>
@@ -156,6 +193,147 @@
       </categories>
       <tags>
         <tag>Study notes</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Windows 使用 SSH 密钥方式远程登陆 Linux 服务器</title>
+    <url>/windows/linux/linux-ssh/</url>
+    <content><![CDATA[<p>学会在 Windos 中使用安全外壳协议连接远程 Linux 服务器。</p>
+<span id="more"></span>
+<p>使用 Linux，你只需要在键盘上输入命令，就可以巧妙地使用计算机（甚至这台计算机可以在世界上任何地方），这正是 Linux 最吸引人的特性之一。有了 OpenSSH, 用户就可以在有权限连接的计算机上打开安全外壳协议，然后远程使用。这对于许多 Linux 用户来说可能不过是日常任务，但从没操作过的人可能就会感到很困惑。本文介绍了如何配置两台计算机的安全外壳协议（简称 SSH）连接，以及如何在没有密码的情况下安全地从一台计算机连接到另一台计算机。</p>
+<h1 id="背景"><a class="markdownIt-Anchor" href="#背景"></a> 背景</h1>
+<p>在华为云购买 Linux 服务器后，想在 Windows 命令行中进行远程连接，在搜索引擎中未检索到相关教程。</p>
+<h1 id="预置知识"><a class="markdownIt-Anchor" href="#预置知识"></a> 预置知识</h1>
+<ul>
+<li>Dos 命令行基础知识和常用操作</li>
+<li>Linux 命令行基础知识和常用操作</li>
+</ul>
+<h1 id="什么是-ssh"><a class="markdownIt-Anchor" href="#什么是-ssh"></a> 什么是 SSH ？</h1>
+<p>Secure Shell<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>（安全外壳协议，简称SSH）是一种加密的网络传输协议，可在不安全的网络中为网络服务提供安全的传输环境。SSH 通过在网络中创建安全隧道来实现SSH客户端与服务器之间的连接。SSH 最常见的用途是远程登录系统，人们通常利用 SSH 来传输命令行界面和远程执行命令。SSH 使用频率最高的场合是类 Unix 系统，但是Windows操作系统也能有限度地使用 SSH。2015年，微软宣布将在未来的操作系统中提供原生 SSH 协议支持，Windows 10 1803版本已提供 OpenSSH 工具。<br />
+在设计上，SSH 是 Telnet 和非安全 shell 的替代品。Telnet 和 Berkeley rlogin、rsh、rexec 等协议采用明文传输，使用不可靠的密码，容易遭到监听、嗅探和中间人攻击。SSH 旨在保证非安全网络环境（例如互联网）中信息加密完整可靠。</p>
+<h1 id="在每台主机上激活-ssh"><a class="markdownIt-Anchor" href="#在每台主机上激活-ssh"></a> 在每台主机上激活 SSH</h1>
+<p>要通过 SSH 连接两台计算机，每个主机都必须安装 SSH。SSH 有两个组成部分：本地计算机上使用的用于启动连接的命令，以及用于接受连接请求的服务器。有些计算机可能已经安装好了 SSH 的一个或两个部分。验证 SSH 是否完全安装的命令因系统而异，Windows 中最简单的验证方法是直接在命令行中输入：</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="variable">$</span> ssh</span><br><span class="line">usage: ssh [-<span class="number">46</span><span class="type">AaCfGgKkMNnqsTtVvXxYy</span>] [-<span class="type">B</span> <span class="type">bind_interface</span>]</span><br><span class="line">            ...</span><br></pre></td></tr></table></figure>
+<p>如果返回 <code>ssh: The term 'ssh' is not recognized as a name of a cmdlet, function, script file, or executable program.</code>，则说明没有安装 SSH 命令。</p>
+<p>如果没有安装 SSH 命令，则要安装 OpenSSH 组件<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>：</p>
+<ol>
+<li>打开“设置”，选择“应用”&gt;“应用和功能”，然后选择“可选功能”。</li>
+<li>扫描列表，查看是否已安装 OpenSSH。如果未安装，请在页面顶部选择“添加功能”，然后：
+<ul>
+<li>查找“OpenSSH”客户端，再单击“安装”</li>
+<li>查找“OpenSSH”服务器，再单击“安装”<br />
+设置完成后，回到“应用”&gt;“应用和功能”和“可选功能”，你应该会看到已列出 OpenSSH。</li>
+</ul>
+</li>
+</ol>
+<p>在 Linux 远程服务器中，最简单的验证方法是查阅相关配置文件：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ file /etc/ssh/ssh_config</span><br><span class="line">/etc/ssh/ssh_config: ASCII text</span><br><span class="line">$ file /etc/ssh/sshd_config</span><br><span class="line">/etc/ssh/sshd_config: ASCII text</span><br></pre></td></tr></table></figure>
+<p>如果返回 <code>No such file or directory</code> 错误，说明没有安装 SSH 命令。<br />
+根据缺失情况选择安装两个组件：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ sudo dnf install openssh-clients openssh-server</span><br></pre></td></tr></table></figure>
+<p>在远程计算机上，使用 <code>systemd</code> 命令启用 SSH 服务：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ sudo systemctl <span class="built_in">enable</span> --now sshd</span><br></pre></td></tr></table></figure>
+<h1 id="开启安全外壳协议"><a class="markdownIt-Anchor" href="#开启安全外壳协议"></a> 开启安全外壳协议</h1>
+<p>现在你已经在远程计算机上安装并启用了 SSH，可以尝试使用密码登录作为测试。要访问远程服务器，你需要有用户帐户和密码。<br />
+远程用户不必与本地用户相同。只要拥有相应用户的密码，你就可以在远程机器上以任何用户的身份登录。<br />
+要通过 SSH 连接到远程计算机，你必须知道其 IP 地址或可解析的主机名。在远程计算机上使用 <code>ip</code> 命令可以查看该机器的 IP 地址：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ ip addr show | grep <span class="string">&quot;inet &quot;</span></span><br></pre></td></tr></table></figure>
+<p>如果你能通过 IP 地址 或 主机名 <code>ping</code> 到远程机器，并且拥有登录帐户，那么就可以通过 SSH 接入远程机器：</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">ping x.x.x.x</span><br></pre></td></tr></table></figure>
+<p>若 ping 不通，请检查服务器的防火墙设置，并开放端口<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup>。<br />
+至此就成功了一小步。再试试使用 SSH 登陆：</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="variable">$</span> whoami</span><br><span class="line">localUsername</span><br><span class="line"><span class="variable">$</span> ssh remoteUsername@IP</span><br><span class="line">bash<span class="variable">$</span> whoami</span><br><span class="line">remoteUsername</span><br></pre></td></tr></table></figure>
+<p>测试登录有效，下一节会介绍如何激活无密码登录。</p>
+<blockquote>
+<p>注：华为云用户可以直接使用服务器的弹性公网IP地址；<br />
+华为云服务器默认开放了22端口共SSH服务进行远程连接。</p>
+</blockquote>
+<h1 id="创建-ssh-密钥"><a class="markdownIt-Anchor" href="#创建-ssh-密钥"></a> 创建 SSH 密钥</h1>
+<p>要在没有密码的情况下安全地登录到另一台计算机，登录者必须拥有 SSH 密钥。可能你的机器上已经有一个 SSH 密钥，但再多创建一个新密钥也没有什么坏处。SSH 密钥的生命周期是在本地计算机上开始的，它由两部分组成：一个是永远不会与任何人或任何东西共享的私钥，一个是可以复制到任何你想要无密码访问的远程机器上的公钥。<br />
+有的人可能会创建一个 SSH 密钥，并将其用于从远程登录到 GitLab 身份验证的所有操作，但我会选择对不同的任务组使用不同的密钥。例如，我在家里使用一个密钥对本地机器进行身份验证，使用另一个密钥对我维护的 Web 服务器进行身份验证，再一个单独的密钥用于 Git 主机，以及又一个用于我托管的 Git 存储库，等等。在此示例中，我将只创建一个唯一密钥，以在局域网内的计算机上使用。</p>
+<p>使用 <code>ssh-keygen</code> 命令创建新的 SSH 密钥：</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="variable">$</span> ssh<span class="literal">-keygen</span> <span class="literal">-t</span> ed25519 <span class="operator">-f</span> ~/.ssh/lan</span><br></pre></td></tr></table></figure>
+<p><code>-t</code> 选项代表 <em>类型</em> ，上述代码设置了一个高于默认值的密钥加密级别。<code>-f</code> 选项代表 <em>文件</em> ，指定了密钥的文件名和位置。运行此命令后会生成一个名为 lan 的 SSH 私钥和一个名为 lan.pub 的 SSH 公钥。<br />
+使用 <code>ssh-copy-id</code> 命令把公钥发送到远程机器上，在此之前要先确保具有远程计算机的 SSH 访问权限。如果你无法使用密码登录远程主机，也就无法设置无密码登录：</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="variable">$</span> ssh<span class="literal">-copy</span><span class="literal">-id</span> <span class="literal">-i</span> ~/.ssh/lan.pub remoteUsername@IP</span><br></pre></td></tr></table></figure>
+<p>过程中系统会提示你输入远程主机上的登录密码。<br />
+操作成功后，使用 -i 选项将 SSH 命令指向对应的密钥（在本例中为 lan）再次尝试登录：</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="variable">$</span> ssh <span class="literal">-i</span> ~/.ssh/lan remoteUsername@IP</span><br><span class="line">bash<span class="variable">$</span> whoami</span><br><span class="line">remoteUsername</span><br></pre></td></tr></table></figure>
+<p>对局域网上的所有计算机重复此过程，你就将能够无密码访问这个局域网上的每台主机。实际上，一旦你设置了无密码认证，你就可以编辑 <code>/etc/ssh/sshd_config</code> 文件来禁止密码认证。这有助于防止其他人使用 SSH 对计算机进行身份验证，除非他们拥有你的私钥。要想达到这个效果，可以在有 <code>sudo</code> 权限的文本编辑器中打开 <code>/etc/ssh/sshd_config</code> 并搜索字符串 <em>PasswordAuthentication</em> ，将默认行更改为：</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">PasswordAuthentication no</span><br></pre></td></tr></table></figure>
+<p>保存并重启 SSH 服务器：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ sudo systemctl restart sshd &amp;amp;&amp;amp; <span class="built_in">echo</span> <span class="string">&quot;OK&quot;</span></span><br><span class="line">OK</span><br><span class="line">$</span><br></pre></td></tr></table></figure>
+<h1 id="日常使用-ssh"><a class="markdownIt-Anchor" href="#日常使用-ssh"></a> 日常使用 SSH</h1>
+<p>OpenSSH 改变了人们对操作计算机的看法，使用户不再被束缚在面前的计算机上。使用 SSH，你可以访问家中的任何计算机，或者拥有帐户的服务器，甚至是移动和物联网设备。充分利用 SSH 也意味着解锁 Linux 终端的更多用途。如果你还没有使用过 SSH，请试一下它吧。试着适应 SSH，创建一些适当的密钥，以此更安全地使用计算机，打破必须与计算机面对面的局限性。</p>
+<p>via: <a href="https://linux.cn/article-13726-1.html">https://linux.cn/article-13726-1.html</a></p>
+<hr class="footnotes-sep" />
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p><a href="https://zh.wikipedia.org/wiki/Secure_Shell">Secure Shell 维基百科，自由的百科全书</a> <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p><a href="https://docs.microsoft.com/zh-cn/windows-server/administration/openssh/openssh_install_firstuse">安装 OpenSSH | Microsoft Docs</a> <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p><a href="https://opensource.com/article/20/8/open-ports-your-firewall">Open ports and route traffic through your firewall</a> <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+]]></content>
+      <categories>
+        <category>Windows</category>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>SSH</tag>
+        <tag>远程登陆</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>BugkuCTF 平台 Reverse 题目 signin Writeup</title>
+    <url>/writeup/writeup-0x01/</url>
+    <content><![CDATA[<p>仅供参考。</p>
+<span id="more"></span>
+<h1 id="题目简介"><a class="markdownIt-Anchor" href="#题目简介"></a> 题目简介</h1>
+<p><a href="https://ctf.bugku.com/challenges/detail/id/136.html">signin</a></p>
+<p>题目类型：Android</p>
+<h1 id="知识点"><a class="markdownIt-Anchor" href="#知识点"></a> 知识点</h1>
+<p>Android 基本架构<br />
+ARM 架构基础知识<br />
+APK 文件格式<br />
+Dalvik 层逆向分析</p>
+<h1 id="工具"><a class="markdownIt-Anchor" href="#工具"></a> 工具</h1>
+<p><a href="https://ibotpeaches.github.io/Apktool/">Apktool</a><br />
+<a href="https://github.com/pxb1988/dex2jar">dex2jar</a><br />
+<a href="https://github.com/java-decompiler/jd-gui">jd-gui</a></p>
+<h1 id="解题过程"><a class="markdownIt-Anchor" href="#解题过程"></a> 解题过程</h1>
+<h2 id="0x01-使用-apktool-反编译-sign_inapk"><a class="markdownIt-Anchor" href="#0x01-使用-apktool-反编译-sign_inapk"></a> 0x01. 使用 <code>Apktool</code> 反编译 <code>sign_in.apk</code></h2>
+<p><img src="https://tuchang2021.oss-cn-beijing.aliyuncs.com/img/Snipaste_2021-08-27_16-17-57.png" alt="Apktool" /></p>
+<h2 id="0x02-使用-dex2jar-生成-jar-文件"><a class="markdownIt-Anchor" href="#0x02-使用-dex2jar-生成-jar-文件"></a> 0x02. 使用 <code>dex2jar</code> 生成 <code>jar</code> 文件</h2>
+<p><img src="https://tuchang2021.oss-cn-beijing.aliyuncs.com/img/20210827163644.png" alt="dex2jar" /></p>
+<h2 id="0x03-使用-jd-gui-查看反编译的-java-代码"><a class="markdownIt-Anchor" href="#0x03-使用-jd-gui-查看反编译的-java-代码"></a> 0x03. 使用 <code>jd-gui</code> 查看反编译的 <code>java</code> 代码</h2>
+<p><img src="https://tuchang2021.oss-cn-beijing.aliyuncs.com/img/20210827164329.png" alt="jd-gui" /></p>
+<p>在 <code>MainActivity.class</code> 中可以找到如图所示的两段关键代码<br />
+读第一段代码可知 <code>falg</code> 为地址是 <code>2131427360</code> 的字符串<br />
+读第二段代码可知 要得到正确的 <code>flag</code> 需要把字符串进行逆置和 <code>base64</code> 解码</p>
+<h2 id="0x04-复制地址在-rclass-中搜索此地址"><a class="markdownIt-Anchor" href="#0x04-复制地址在-rclass-中搜索此地址"></a> 0x04. 复制地址，在 <code>R.class</code> 中搜索此地址</h2>
+<p><img src="https://tuchang2021.oss-cn-beijing.aliyuncs.com/img/20210827165344.png" alt="search" /></p>
+<p>R 中表明 <code>2131427360</code> 对应的 <code>toString</code> 变量在 <code>string.xml</code> 里</p>
+<h2 id="0x05-去-resvaluesstringxml-目录查找-tostring-变量"><a class="markdownIt-Anchor" href="#0x05-去-resvaluesstringxml-目录查找-tostring-变量"></a> 0x05. 去 <code>res/values/string.xml</code> 目录查找 <code>toString</code> 变量</h2>
+<p><img src="https://tuchang2021.oss-cn-beijing.aliyuncs.com/img/20210827170706.png" alt="toString" /></p>
+<p><code>flag()</code> 方法中返回的字符串为 <code>991YiZWOz81ZhFjZfJXdwk3X1k2XzIXZIt3ZhxmZ</code></p>
+<h2 id="0x06-写脚本将得到的字符串逆置并进行-base64-解码"><a class="markdownIt-Anchor" href="#0x06-写脚本将得到的字符串逆置并进行-base64-解码"></a> 0x06. 写脚本将得到的字符串逆置并进行 <code>base64</code> 解码</h2>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.io.UnsupportedEncodingException;</span><br><span class="line"><span class="keyword">import</span> java.util.Base64;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainActivity</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> String <span class="title">getFlag</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;991YiZWOz81ZhFjZfJXdwk3X1k2XzIXZIt3ZhxmZ&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">decode</span><span class="params">(String base64str)</span> </span>&#123;</span><br><span class="line">        String str = <span class="string">&quot;&quot;</span>;</span><br><span class="line">        <span class="comment">// 解码</span></span><br><span class="line">        <span class="keyword">byte</span>[] base64Data = Base64.getDecoder().decode(base64str);</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">// byte[] --&gt; string</span></span><br><span class="line">            str = <span class="keyword">new</span> String(base64Data, <span class="string">&quot;utf-8&quot;</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (UnsupportedEncodingException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> str;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        System.out.println(decode(<span class="keyword">new</span> StringBuffer(getFlag()).reverse().toString()));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://tuchang2021.oss-cn-beijing.aliyuncs.com/img/20210827171310.png" alt="flag" /></p>
+<h1 id="言论"><a class="markdownIt-Anchor" href="#言论"></a> 言论</h1>
+<p>失败很少是一种永久状态。失败后，继续前进就可以了。失败只是旅程中的一站，不要让它成为你的目的地。</p>
+<p>– <a href="https://historyofyesterday.com/the-first-delta-force-trainee-class-fc46a131fea2">《首届 Delta Force 训练班》</a></p>
+]]></content>
+      <categories>
+        <category>Writeup</category>
+      </categories>
+      <tags>
+        <tag>Reverse</tag>
+        <tag>Writeup</tag>
+        <tag>Andorid</tag>
       </tags>
   </entry>
 </search>

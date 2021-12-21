@@ -6,7 +6,7 @@
   <link href="https://starsound.xyz/atom.xml" rel="self"/>
   
   <link href="https://starsound.xyz/"/>
-  <updated>2021-10-19T09:27:13.266Z</updated>
+  <updated>2021-12-21T12:21:15.522Z</updated>
   <id>https://starsound.xyz/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Windows 使用 SSH 密钥方式远程登陆 Linux 服务器</title>
+    <link href="https://starsound.xyz/windows/linux/linux-ssh/"/>
+    <id>https://starsound.xyz/windows/linux/linux-ssh/</id>
+    <published>2021-12-21T10:15:14.000Z</published>
+    <updated>2021-12-21T12:21:15.522Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;学会在 Windos 中使用安全外壳协议连接远程 Linux 服务器。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="Windows" scheme="https://starsound.xyz/categories/windows/"/>
+    
+    <category term="Linux" scheme="https://starsound.xyz/categories/windows/linux/"/>
+    
+    
+    <category term="SSH" scheme="https://starsound.xyz/tags/ssh/"/>
+    
+    <category term="远程登陆" scheme="https://starsound.xyz/tags/%E8%BF%9C%E7%A8%8B%E7%99%BB%E9%99%86/"/>
+    
+  </entry>
   
   <entry>
     <title>《深入理解计算机系统》学习笔记</title>
@@ -45,7 +68,8 @@
     <updated>2021-10-19T09:36:46.195Z</updated>
     
     
-    <summary type="html">&lt;p&gt;这里记录值得分享的科技内容，不定时更新。&lt;br&gt;一般收录笔者平时网上冲浪时遇见的感兴趣的文章/软件/资源。&lt;/p&gt;</summary>
+    <summary type="html">&lt;p&gt;这里记录值得分享的科技内容，不定时更新。&lt;br /&gt;
+一般收录笔者平时网上冲浪时遇见的感兴趣的文章/软件/资源。&lt;/p&gt;</summary>
     
     
     
