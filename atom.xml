@@ -6,7 +6,7 @@
   <link href="https://starsound.xyz/atom.xml" rel="self"/>
   
   <link href="https://starsound.xyz/"/>
-  <updated>2021-12-21T12:21:15.522Z</updated>
+  <updated>2022-03-02T12:03:20.525Z</updated>
   <id>https://starsound.xyz/</id>
   
   <author>
@@ -17,11 +17,32 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>出现 “The emulator process for AVD XXX has terminated” 的解决办法</title>
+    <link href="https://starsound.xyz/android/log-3-2-2022/"/>
+    <id>https://starsound.xyz/android/log-3-2-2022/</id>
+    <published>2022-03-02T11:49:26.000Z</published>
+    <updated>2022-03-02T12:03:20.525Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;一次 android studio avd 报错的整理。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="Android" scheme="https://starsound.xyz/categories/android/"/>
+    
+    
+    <category term="Android-studio" scheme="https://starsound.xyz/tags/android-studio/"/>
+    
+    <category term="Avd" scheme="https://starsound.xyz/tags/avd/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Windows 使用 SSH 密钥方式远程登陆 Linux 服务器</title>
     <link href="https://starsound.xyz/windows/linux/linux-ssh/"/>
     <id>https://starsound.xyz/windows/linux/linux-ssh/</id>
     <published>2021-12-21T10:15:14.000Z</published>
-    <updated>2021-12-21T12:21:15.522Z</updated>
+    <updated>2021-12-23T11:47:27.999Z</updated>
     
     
     <summary type="html">&lt;p&gt;学会在 Windos 中使用安全外壳协议连接远程 Linux 服务器。&lt;/p&gt;</summary>
@@ -40,11 +61,11 @@
   </entry>
   
   <entry>
-    <title>《深入理解计算机系统》学习笔记</title>
+    <title>《深入理解计算机系统》学习笔记 第一章</title>
     <link href="https://starsound.xyz/computer-systems/study/csapp-note/"/>
     <id>https://starsound.xyz/computer-systems/study/csapp-note/</id>
     <published>2021-10-19T10:00:00.000Z</published>
-    <updated>2021-10-19T09:27:13.266Z</updated>
+    <updated>2022-01-16T02:53:59.970Z</updated>
     
     
     <summary type="html">&lt;p&gt;个人在阅读并学习《深入理解计算机系统》 中文电子版（原书第3版）时整理的学习笔记。&lt;/p&gt;</summary>

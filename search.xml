@@ -1,76 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>科技爱好者文摘（2021年9月）</title>
-    <url>/enthusiasm/digest/digest-21-09/</url>
-    <content><![CDATA[<p>这里记录值得分享的科技内容，不定时更新。<br />
-一般收录笔者平时网上冲浪时遇见的感兴趣的文章/软件/资源。</p>
-<span id="more"></span>
-<h1 id="文章"><a class="markdownIt-Anchor" href="#文章"></a> 文章</h1>
-<ol>
-<li><a href="https://habr.com/en/post/574082/">绝对值的计算并不简单</a></li>
-</ol>
-<p>计算一个数的绝对值看起来似乎很简单：如果数字是负数，那么让它改变符号；否则，就让保持原样。<br />
-在 <code>Java</code> 中，它可能看起来像这样：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">double</span> <span class="title">abs</span><span class="params">(<span class="keyword">double</span> value)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (value &lt; <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> -value;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> value;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>即使对于初级面试问题，这似乎也太容易了。这里有什么陷阱吗？<br />
-在 <a href="https://en.wikipedia.org/wiki/IEEE_754-2008"><code>IEEE-754</code></a> 标准中，特别是在 Java 中，有两个零 <code>+0.0</code> 和 <code>-0.0</code> 。<br />
-如果将 <code>1.0</code> 除以 <code>+0.0</code> 和 <code>-0.0</code> ，则会得到完全不同的答案 <code>+Infinity</code> 和 <code>-Infinity</code> 。然而，在比较运算中， <code>+0.0</code> 和 <code>-0.0</code> 是无法区分的。<br />
-因此，上面的实现不会删除 <code>-0.0</code> 输入的减号。这可能会导致意想不到的结果。例如：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">double</span> x = -<span class="number">0.0</span>;</span><br><span class="line"><span class="keyword">if</span> (<span class="number">1</span> / abs(x) &lt; <span class="number">0</span>) &#123;</span><br><span class="line">  System.out.println(<span class="string">&quot;oops&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><code>x</code> 模数的倒数不能为负，无论 <code>x</code> 值是多少。但在这种情况下，它可以。<br />
-如果您有虐待狂的情绪，请让您的应聘者在面试中写出 <code>abs</code> 方法。当他们写出一种像文章开头那样的方法时，你可以问他们是否有值 <code>x</code> 使条件 <code>1 / abs (x) &lt; 0</code> 为真。在这样的采访之后，就会有关于贵公司的传闻。<br />
-好的，我们发现了问题。现在，如何解决？<br />
-为了可靠地区分负零和正零，有一种 <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Double.html#compare-double-double-"><code>Double.compare</code></a> 方法：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">double</span> <span class="title">abs</span><span class="params">(<span class="keyword">double</span> value)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (value &lt; <span class="number">0</span> || Double.compare(value, -<span class="number">0.0</span>) == <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> -value;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> value;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这是解决这个问题的一种有效方法。然而，对于这样一个微不足道的操作，我们的方法变得非常慢。 <code>Double.compare</code> 实现并不是那么简单。它需要对正数进行两次额外比较，对 <code>-0.0</code> 进行三次比较，对 <code>+0.0</code> 进行多达四次比较。<br />
-我们可以少做点吗？事实证明，我们可以通过从 中减去它来将正零和负零变成正零 <code>0.0</code> ：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">System.out.println(<span class="number">0.0</span>-(-<span class="number">0.0</span>)); <span class="comment">// 0.0</span></span><br><span class="line">System.out.println(<span class="number">0.0</span>-(+<span class="number">0.0</span>)); <span class="comment">// 0.0</span></span><br></pre></td></tr></table></figure>
-<p>因此，我们可以通过以下方式重写实现：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">double</span> <span class="title">abs</span><span class="params">(<span class="keyword">double</span> value)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (value &lt;= <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0.0</span> - value;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> value;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>我们知道分支是不好的。如果 CPU 分支预测器的猜测不正确，则代价可能非常高。<br />
-现在我们考虑是否能降到零分支。<br />
-如果我们查看 <code>IEEE-754</code> 格式的<a href="https://en.wikipedia.org/wiki/Double-precision_floating-point_format">双精度数的二进制</a>表示，我们可以看到符号只是一个最高有效位。因此，我们只需要无条件地清除这个最重要的位。在此操作期间，其余数字不会更改。在这方面，小数比整数更简单，其中负数通过二进制补码变成正数。我们可以通过 <code>&amp;</code> 使用正确掩码的操作清除最高有效位。此外，我们还需要将 <code>double</code> 类型数字重新解释为 <code>long</code> 类型并在操作后还原它(这可以通过 <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Double.html#longBitsToDouble-long-"><code>longBitsToDouble</code></a> 方法实现)：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">double</span> <span class="title">abs</span><span class="params">(<span class="keyword">double</span> value)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> Double.longBitsToDouble(</span><br><span class="line">    Double.doubleToRawLongBits(value) &amp; <span class="number">0x7fffffffffffffffL</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这个实现根本不包含分支，分析表明该方法在某些条件下的吞吐量增加了 10%。之前的单分支实现在 Java 标准库中已经存在多年，但在即将到来的 <code>Java 18</code> 中，<a href="https://github.com/openjdk/jdk/pull/4711">改进版本</a>已经提交。<br />
-然而，在许多情况下，这些改进并不意味着什么。这是因为 <code>JIT</code> 编译器可以使用适当的汇编指令（如果可用），而完全忽略 <code>Java</code> 代码。但多亏了它，我可以写一篇（希望如此！）有趣的文章。</p>
-<h1 id="文摘"><a class="markdownIt-Anchor" href="#文摘"></a> 文摘</h1>
-<ol>
-<li><a href="https://threadreaderapp.com/thread/1421078387376918529.html">浏览器标准被大公司左右</a></li>
-</ol>
-<p>最近这些年，浏览器开发商（比如谷歌和苹果）从 <code>W3C</code> 手中夺取了网络标准的控制权。<br />
-网络标准正越来越多由大公司来决定，而不是由标准化组织 <code>W3C</code> 来决定。<br />
-大公司为了自己的业务，让浏览器的功能不断膨胀，目标是让 <code>Web</code> 网站做到原生应用可以做的一切，这是一个巨大的错误。<br />
-大公司明白，添加到 Web 的功能越多，浏览器之间的竞争就会越少！<br />
-谁能跟上谷歌推出新标准的脚步？ <code>Mozilla</code> 不能，苹果不能，甚至微软也认输了，放弃自己开发浏览器引擎，直接采用了 <code>Chromium</code> 作为自家 <code>Edge</code> 浏览器的内核。<br />
-想象一下，现在有一家小公司试图从头开始编写一个 Web 浏览器。简直不可能！网络如此复杂，他别无选择，只能采用少数现有的浏览器引擎之一：<code>Chromium</code> 、 <code>WebKit</code> 、 <code>Gecko</code> 。<br />
-这就是现在的状况，浏览器市场的竞争正在越来越少。“每个人都必须采用 <code>Chromium</code> ，这正是谷歌的计划。<br />
-谁主导了浏览器引擎，谁就控制了互联网。即使 <code>Web</code> 标准是开放的，理论上允许任何人实现浏览器引擎。但是 <code>Web</code> 标准那么多、那么复杂，实际上没有人可以实现能与 <code>Chromium</code> 抗衡的浏览器引擎，那么这种开放也没有意义了。<br />
-现在的 Web 标准被大公司控制，已经沦为 <code>Chromium</code> 、 <code>WebKit</code> 、 <code>Gecko</code> 和它们各自怪癖的集合。以后怎么可能还会有新引擎？<br />
-如果没有新的人可以编写浏览器引擎，网络就不会是开放的。开放只是一种错觉。</p>
-<p>来源：<a href="https://github.com/ruanyf/weekly/blob/master/docs/issue-177.md">科技爱好者周刊（第 177 期）：iPad 的真正用途</a></p>
-<h1 id="工具"><a class="markdownIt-Anchor" href="#工具"></a> 工具</h1>
-<ol>
-<li><a href="https://neatnik.net/view-source/">View Source</a><br />
-一个 <code>Web</code> 小工具，输入网址，就可以高亮显示该网址的源码，非常好用。</li>
-</ol>
-<h1 id="言论"><a class="markdownIt-Anchor" href="#言论"></a> 言论</h1>
-<p>一家印度电力公司的高管告诉我，印度面临的最大问题将是缺电，电力需求以历史上从未有过的速度增长。</p>
-<p>因为印度的夏天太热了，而且变得越来越热，印度的中产阶级也越来越多。印度家庭有钱以后，第一件要买的东西不是汽车、电脑或平板电视，而是一台空调。</p>
-<p>– <a href="https://www.fastcompany.com/90667124/how-to-spot-tomorrows-macrotrends-before-they-change-everything">《如何提早发现宏观趋势》</a></p>
-]]></content>
-      <categories>
-        <category>Enthusiasm</category>
-        <category>Digest</category>
-      </categories>
-      <tags>
-        <tag>Science and technology</tag>
-        <tag>Enthusiasm</tag>
-        <tag>Digest</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>《深入理解计算机系统》学习笔记</title>
+    <title>《深入理解计算机系统》学习笔记 第一章</title>
     <url>/computer-systems/study/csapp-note/</url>
     <content><![CDATA[<p>个人在阅读并学习《深入理解计算机系统》 中文电子版（原书第3版）时整理的学习笔记。</p>
 <span id="more"></span>
@@ -285,6 +216,120 @@ hello.c 的表示方法说明了一个基本思想∶系统中所有的信息—
       <tags>
         <tag>SSH</tag>
         <tag>远程登陆</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>科技爱好者文摘（2021年9月）</title>
+    <url>/enthusiasm/digest/digest-21-09/</url>
+    <content><![CDATA[<p>这里记录值得分享的科技内容，不定时更新。<br />
+一般收录笔者平时网上冲浪时遇见的感兴趣的文章/软件/资源。</p>
+<span id="more"></span>
+<h1 id="文章"><a class="markdownIt-Anchor" href="#文章"></a> 文章</h1>
+<ol>
+<li><a href="https://habr.com/en/post/574082/">绝对值的计算并不简单</a></li>
+</ol>
+<p>计算一个数的绝对值看起来似乎很简单：如果数字是负数，那么让它改变符号；否则，就让保持原样。<br />
+在 <code>Java</code> 中，它可能看起来像这样：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">double</span> <span class="title">abs</span><span class="params">(<span class="keyword">double</span> value)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (value &lt; <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> -value;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> value;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>即使对于初级面试问题，这似乎也太容易了。这里有什么陷阱吗？<br />
+在 <a href="https://en.wikipedia.org/wiki/IEEE_754-2008"><code>IEEE-754</code></a> 标准中，特别是在 Java 中，有两个零 <code>+0.0</code> 和 <code>-0.0</code> 。<br />
+如果将 <code>1.0</code> 除以 <code>+0.0</code> 和 <code>-0.0</code> ，则会得到完全不同的答案 <code>+Infinity</code> 和 <code>-Infinity</code> 。然而，在比较运算中， <code>+0.0</code> 和 <code>-0.0</code> 是无法区分的。<br />
+因此，上面的实现不会删除 <code>-0.0</code> 输入的减号。这可能会导致意想不到的结果。例如：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">double</span> x = -<span class="number">0.0</span>;</span><br><span class="line"><span class="keyword">if</span> (<span class="number">1</span> / abs(x) &lt; <span class="number">0</span>) &#123;</span><br><span class="line">  System.out.println(<span class="string">&quot;oops&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>x</code> 模数的倒数不能为负，无论 <code>x</code> 值是多少。但在这种情况下，它可以。<br />
+如果您有虐待狂的情绪，请让您的应聘者在面试中写出 <code>abs</code> 方法。当他们写出一种像文章开头那样的方法时，你可以问他们是否有值 <code>x</code> 使条件 <code>1 / abs (x) &lt; 0</code> 为真。在这样的采访之后，就会有关于贵公司的传闻。<br />
+好的，我们发现了问题。现在，如何解决？<br />
+为了可靠地区分负零和正零，有一种 <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Double.html#compare-double-double-"><code>Double.compare</code></a> 方法：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">double</span> <span class="title">abs</span><span class="params">(<span class="keyword">double</span> value)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (value &lt; <span class="number">0</span> || Double.compare(value, -<span class="number">0.0</span>) == <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> -value;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> value;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这是解决这个问题的一种有效方法。然而，对于这样一个微不足道的操作，我们的方法变得非常慢。 <code>Double.compare</code> 实现并不是那么简单。它需要对正数进行两次额外比较，对 <code>-0.0</code> 进行三次比较，对 <code>+0.0</code> 进行多达四次比较。<br />
+我们可以少做点吗？事实证明，我们可以通过从 中减去它来将正零和负零变成正零 <code>0.0</code> ：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">System.out.println(<span class="number">0.0</span>-(-<span class="number">0.0</span>)); <span class="comment">// 0.0</span></span><br><span class="line">System.out.println(<span class="number">0.0</span>-(+<span class="number">0.0</span>)); <span class="comment">// 0.0</span></span><br></pre></td></tr></table></figure>
+<p>因此，我们可以通过以下方式重写实现：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">double</span> <span class="title">abs</span><span class="params">(<span class="keyword">double</span> value)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (value &lt;= <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0.0</span> - value;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> value;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们知道分支是不好的。如果 CPU 分支预测器的猜测不正确，则代价可能非常高。<br />
+现在我们考虑是否能降到零分支。<br />
+如果我们查看 <code>IEEE-754</code> 格式的<a href="https://en.wikipedia.org/wiki/Double-precision_floating-point_format">双精度数的二进制</a>表示，我们可以看到符号只是一个最高有效位。因此，我们只需要无条件地清除这个最重要的位。在此操作期间，其余数字不会更改。在这方面，小数比整数更简单，其中负数通过二进制补码变成正数。我们可以通过 <code>&amp;</code> 使用正确掩码的操作清除最高有效位。此外，我们还需要将 <code>double</code> 类型数字重新解释为 <code>long</code> 类型并在操作后还原它(这可以通过 <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Double.html#longBitsToDouble-long-"><code>longBitsToDouble</code></a> 方法实现)：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">double</span> <span class="title">abs</span><span class="params">(<span class="keyword">double</span> value)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> Double.longBitsToDouble(</span><br><span class="line">    Double.doubleToRawLongBits(value) &amp; <span class="number">0x7fffffffffffffffL</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个实现根本不包含分支，分析表明该方法在某些条件下的吞吐量增加了 10%。之前的单分支实现在 Java 标准库中已经存在多年，但在即将到来的 <code>Java 18</code> 中，<a href="https://github.com/openjdk/jdk/pull/4711">改进版本</a>已经提交。<br />
+然而，在许多情况下，这些改进并不意味着什么。这是因为 <code>JIT</code> 编译器可以使用适当的汇编指令（如果可用），而完全忽略 <code>Java</code> 代码。但多亏了它，我可以写一篇（希望如此！）有趣的文章。</p>
+<h1 id="文摘"><a class="markdownIt-Anchor" href="#文摘"></a> 文摘</h1>
+<ol>
+<li><a href="https://threadreaderapp.com/thread/1421078387376918529.html">浏览器标准被大公司左右</a></li>
+</ol>
+<p>最近这些年，浏览器开发商（比如谷歌和苹果）从 <code>W3C</code> 手中夺取了网络标准的控制权。<br />
+网络标准正越来越多由大公司来决定，而不是由标准化组织 <code>W3C</code> 来决定。<br />
+大公司为了自己的业务，让浏览器的功能不断膨胀，目标是让 <code>Web</code> 网站做到原生应用可以做的一切，这是一个巨大的错误。<br />
+大公司明白，添加到 Web 的功能越多，浏览器之间的竞争就会越少！<br />
+谁能跟上谷歌推出新标准的脚步？ <code>Mozilla</code> 不能，苹果不能，甚至微软也认输了，放弃自己开发浏览器引擎，直接采用了 <code>Chromium</code> 作为自家 <code>Edge</code> 浏览器的内核。<br />
+想象一下，现在有一家小公司试图从头开始编写一个 Web 浏览器。简直不可能！网络如此复杂，他别无选择，只能采用少数现有的浏览器引擎之一：<code>Chromium</code> 、 <code>WebKit</code> 、 <code>Gecko</code> 。<br />
+这就是现在的状况，浏览器市场的竞争正在越来越少。“每个人都必须采用 <code>Chromium</code> ，这正是谷歌的计划。<br />
+谁主导了浏览器引擎，谁就控制了互联网。即使 <code>Web</code> 标准是开放的，理论上允许任何人实现浏览器引擎。但是 <code>Web</code> 标准那么多、那么复杂，实际上没有人可以实现能与 <code>Chromium</code> 抗衡的浏览器引擎，那么这种开放也没有意义了。<br />
+现在的 Web 标准被大公司控制，已经沦为 <code>Chromium</code> 、 <code>WebKit</code> 、 <code>Gecko</code> 和它们各自怪癖的集合。以后怎么可能还会有新引擎？<br />
+如果没有新的人可以编写浏览器引擎，网络就不会是开放的。开放只是一种错觉。</p>
+<p>来源：<a href="https://github.com/ruanyf/weekly/blob/master/docs/issue-177.md">科技爱好者周刊（第 177 期）：iPad 的真正用途</a></p>
+<h1 id="工具"><a class="markdownIt-Anchor" href="#工具"></a> 工具</h1>
+<ol>
+<li><a href="https://neatnik.net/view-source/">View Source</a><br />
+一个 <code>Web</code> 小工具，输入网址，就可以高亮显示该网址的源码，非常好用。</li>
+</ol>
+<h1 id="言论"><a class="markdownIt-Anchor" href="#言论"></a> 言论</h1>
+<p>一家印度电力公司的高管告诉我，印度面临的最大问题将是缺电，电力需求以历史上从未有过的速度增长。</p>
+<p>因为印度的夏天太热了，而且变得越来越热，印度的中产阶级也越来越多。印度家庭有钱以后，第一件要买的东西不是汽车、电脑或平板电视，而是一台空调。</p>
+<p>– <a href="https://www.fastcompany.com/90667124/how-to-spot-tomorrows-macrotrends-before-they-change-everything">《如何提早发现宏观趋势》</a></p>
+]]></content>
+      <categories>
+        <category>Enthusiasm</category>
+        <category>Digest</category>
+      </categories>
+      <tags>
+        <tag>Science and technology</tag>
+        <tag>Enthusiasm</tag>
+        <tag>Digest</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>出现 “The emulator process for AVD XXX has terminated” 的解决办法</title>
+    <url>/android/log-3-2-2022/</url>
+    <content><![CDATA[<p>一次 android studio avd 报错的整理。</p>
+<span id="more"></span>
+<h2 id="错误描述"><a class="markdownIt-Anchor" href="#错误描述"></a> 错误描述</h2>
+<p>最近正在学 Android 开发，每次直接退出 Andriod Studio IDE 时，（不关机重启的情况下）下次再打开 IDE 运行安卓模拟器总会出现以下错误：</p>
+<p><img src="http://tuchang2021.oss-cn-beijing.aliyuncs.com/img/image-20220302171738471.png" alt="报错信息" /></p>
+<p>每次只有重启才能解决问题，重启后运行一切正常。</p>
+<h2 id="错误原因"><a class="markdownIt-Anchor" href="#错误原因"></a> 错误原因</h2>
+<p>网上的方法大多数都试了以后，发现对我这种情况都没有作用。<br />
+于是找到了 android studio logs 文件<br />
+<code>(C:\Users\YourUserName\AppData\Local\Google\AndroidStudio2021.1\log)</code><br />
+滑倒最底部发现报错如下：<br />
+<code>Another emulator instance is running. Please close it or run all emulators with -read-only flag.</code><br />
+这句话的意思是已经有一个 emulaor 进程在运行，应该先关闭之前的进程。</p>
+<h2 id="解决方法"><a class="markdownIt-Anchor" href="#解决方法"></a> 解决方法</h2>
+<p>可以打开任务管理器或者用 <code>taskkill</code> 命令结束之前的 emulator 进程：</p>
+<ol>
+<li>打开 <code>Command Prompt</code></li>
+<li>输入：<code>taskkill /F /IM &quot;qemu-system-x86_64.exe&quot; /T</code><br />
+参数说明：</li>
+</ol>
+<blockquote>
+<p>/F    Specifies that processes be forcefully ended. This parameter is ignored for remote processes; all remote processes are forcefully ended.<br />
+/IM   Specifies the image name of the process to be terminated.<br />
+/T    Ends the specified process and any child processes started by it.</p>
+</blockquote>
+<h2 id="如何避免"><a class="markdownIt-Anchor" href="#如何避免"></a> 如何避免</h2>
+<p>我们已经知道了这个错误是同时打开了两个模拟器造成的，可以看出在 <code>Run app</code> 以后如果直接退出 andriod studio，虽然我在弹出的对话框中选择了 <code>Terminate</code>，但它并没有彻底结束 emulator 的进程。<br />
+所以在退出模拟器之前一定要 <code>Stop</code>，这样才会彻底结束 emulator 的进程，防止下次打开再报错。</p>
+<h2 id="参考链接"><a class="markdownIt-Anchor" href="#参考链接"></a> 参考链接</h2>
+<ol>
+<li><a href="https://stackoverflow.com/questions/67346232/android-emulator-issues-in-new-versions-the-emulator-process-has-terminated">https://stackoverflow.com/questions/67346232/android-emulator-issues-in-new-versions-the-emulator-process-has-terminated</a></li>
+<li><a href="https://stackoverflow.com/questions/67987153/android-studio-flutter-warning-another-emulator-is-still-running-windows-10">https://stackoverflow.com/questions/67987153/android-studio-flutter-warning-another-emulator-is-still-running-windows-10</a></li>
+</ol>
+]]></content>
+      <categories>
+        <category>Android</category>
+      </categories>
+      <tags>
+        <tag>Android-studio</tag>
+        <tag>Avd</tag>
       </tags>
   </entry>
   <entry>
