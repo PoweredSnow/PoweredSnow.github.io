@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>second on Yoki&#39;s Blog</title>
+    <link>https://poweredsnow.github.io/tags/second/</link>
+    <description>Recent content in second on Yoki&#39;s Blog</description>
+    <image>
+      <url>https://poweredsnow.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
+      <link>https://poweredsnow.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sat, 13 Aug 2022 18:53:39 +0800</lastBuildDate><atom:link href="https://poweredsnow.github.io/tags/second/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Second Title</title>
+      <link>https://poweredsnow.github.io/second-title/</link>
+      <pubDate>Sat, 13 Aug 2022 18:53:39 +0800</pubDate>
+      
+      <guid>https://poweredsnow.github.io/second-title/</guid>
+      <description>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</description>
+    </item>
+    
+  </channel>
+</rss>
