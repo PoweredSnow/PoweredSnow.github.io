@@ -2,29 +2,29 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://poweredsnow.github.io/categories/</loc>
+    <loc>https://yok1.netlify.app/categories/</loc>
     <lastmod>2020-09-15T11:30:03+00:00</lastmod>
   </url><url>
-    <loc>https://poweredsnow.github.io/categories/example/</loc>
+    <loc>https://yok1.netlify.app/categories/example/</loc>
     <lastmod>2020-09-15T11:30:03+00:00</lastmod>
   </url><url>
-    <loc>https://poweredsnow.github.io/example-title/</loc>
+    <loc>https://yok1.netlify.app/example-title/</loc>
     <lastmod>2020-09-15T11:30:03+00:00</lastmod>
   </url><url>
-    <loc>https://poweredsnow.github.io/tags/first/</loc>
+    <loc>https://yok1.netlify.app/tags/first/</loc>
     <lastmod>2020-09-15T11:30:03+00:00</lastmod>
   </url><url>
-    <loc>https://poweredsnow.github.io/tags/</loc>
+    <loc>https://yok1.netlify.app/tags/</loc>
     <lastmod>2020-09-15T11:30:03+00:00</lastmod>
   </url><url>
-    <loc>https://poweredsnow.github.io/</loc>
+    <loc>https://yok1.netlify.app/</loc>
     <lastmod>2020-09-15T11:30:03+00:00</lastmod>
   </url><url>
-    <loc>https://poweredsnow.github.io/posts/</loc>
+    <loc>https://yok1.netlify.app/posts/</loc>
     <lastmod>2020-09-15T11:30:03+00:00</lastmod>
   </url><url>
-    <loc>https://poweredsnow.github.io/archives/</loc>
+    <loc>https://yok1.netlify.app/archives/</loc>
   </url><url>
-    <loc>https://poweredsnow.github.io/search/</loc>
+    <loc>https://yok1.netlify.app/search/</loc>
   </url>
 </urlset>
